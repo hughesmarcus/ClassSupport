@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/launcher_search">
+    <fragment
+        android:id="@+id/launcher_search"
+        android:name="com.supporter.marcus.classsupport.ui.search.SearchFragment"
+        tools:layout="@layout/search_fragment">
+
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/home"
+        android:name="com.supporter.marcus.classsupport.ui.home.HomeFragment"
+        tools:layout="@layout/main_fragment">
+
+
+
+    </fragment>
+
+
+</navigation>

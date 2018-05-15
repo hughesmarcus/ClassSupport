@@ -1,0 +1,29 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+apply from: "versions.gradle"
+
+buildscript {
+    apply from: "versions.gradle"
+
+    repositories {
+        //TODO HotSpot Repo
+        // maven { url "https://..." }
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:3.2.0-alpha14"
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha01'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        //TODO HotSpot Repo
+        // maven { url "https://..." }
+        mavenLocal()
+        jcenter()
+        google()
+    }
+}
