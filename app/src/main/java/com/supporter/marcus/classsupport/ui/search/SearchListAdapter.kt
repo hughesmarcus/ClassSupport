@@ -8,10 +8,14 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.supporter.marcus.classsupport.R
+import java.util.Collections.addAll
+import android.content.ClipData.Item
+
+
 
 class SearchListAdapter(
         val context: Context,
-        var list: List<ProposalItem>,
+        var list: MutableList<ProposalItem>,
         private val onDetailSelected: (ProposalItem) -> Unit
 ) : RecyclerView.Adapter<SearchListAdapter.SearchResultHolder>() {
 
@@ -24,12 +28,19 @@ class SearchListAdapter(
         holder.display(list[position], context, onDetailSelected)
     }
 
+    fun addAll(items: List<ProposalItem>) {
+        val currentItemCount =  itemCount
+        list.addAll(items)
+        notifyItemRangeInserted(currentItemCount, items.size)
+    }
     override fun getItemCount() = list.size
 
     inner class SearchResultHolder(item: View) : RecyclerView.ViewHolder(item) {
         private val proposalItemLayout = item.findViewById<android.support.constraint.ConstraintLayout>(R.id.proposalItemLayout)
 
         private val proposaldesc = item.findViewById<TextView>(R.id.prop_desc)
+        private val teacher = item.findViewById<TextView>(R.id.teacher_name)
+        private val school = item.findViewById<TextView>(R.id.school)
 
 
         fun display(
@@ -39,6 +50,8 @@ class SearchListAdapter(
         ) {
             proposalItemLayout.setOnClickListener { onClick(proposalmodel) }
             proposaldesc.text = proposalmodel.desc
+            teacher.text = proposalmodel.teacher
+            school.text = proposalmodel.school
 
 
         }

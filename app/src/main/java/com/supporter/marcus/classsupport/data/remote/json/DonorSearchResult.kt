@@ -26,5 +26,5 @@ data class DonorSearchResult (
     var breadcrumb: List<List<String>>,
     @SerializedName("proposals")
 
-    var proposals: List<Proposal>
+    var proposals: MutableList<Proposal>
 )

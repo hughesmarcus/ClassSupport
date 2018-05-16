@@ -8,8 +8,15 @@ import retrofit2.Call
 
 interface DonorDataSource {
     @GET("json_feed.html?")
-    fun searchProjects(@Query("keywords") keywords: String,@Query("APIKey") key:String ): Deferred<DonorSearchResult>
-   // @GET("api/unknown")
-   // fun searchProjects( ): Deferred<DonorSearchResult>
+    fun searchProjects(@Query("keywords") keywords: String?,
+                       @Query("APIKey") key:String?,
+                       @Query("gradeType") gradeType: String?,
+                       @Query("schoolType") schoolType: String?,
+                       @Query("state") state: String?,
+                       @Query("sortBy") sortBy: String?,
+                       @Query("index") index: String?,
+                       @Query("max") max: String?
+    ): Deferred<DonorSearchResult>
+
 
 }

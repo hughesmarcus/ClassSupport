@@ -15,7 +15,15 @@ import com.supporter.marcus.classsupport.util.rx.SchedulerProvider
 class SearchViewModel(
         private val donorRepository: DonorRepository,
         schedulerProvider: SchedulerProvider
+
 ) : RxViewModel(schedulerProvider) {
+    private var lastSearched:String? =  null
+    private var lastIndex:String? = "0"
+    private var lastGradeType: String? = null
+    private var lastSchoolType: String? = null
+    private var lastState: String? = null
+   private var lastSortBy: String? = null
+    private var lastMax: String? = "50"
     private val mStates = MutableLiveData<State>()
     val states: LiveData<State>
         get() = mStates
@@ -25,14 +33,37 @@ class SearchViewModel(
         get() = mEvents
 
 
-    fun loadNewLocation(query: String) {
+    fun loadNewProposals(query: String? ,gradeType: String?,
+                         schoolType: String?,state: String?,
+                         sortBy: String?,index: String?,max: String?) {
         launch {
             mEvents.value = LoadingProposalsEvent(query)
             try {
-                val proposals = donorRepository.getProposal(query).await()
-                mStates.value = ProposalListState.from(proposals)
+                val proposals = donorRepository.getProposal(query,gradeType,schoolType,state,sortBy,index,max).await()
+                lastSearched = query
+                lastIndex = proposals.lastIndex.toString()
+                lastGradeType = gradeType
+                lastMax = max
+                lastSchoolType = schoolType
+                lastState = state
+                lastSortBy = sortBy
+                mStates.value = ProposalListState.from(proposals, proposals.lastIndex.toString())
             } catch (error: Throwable) {
                 mEvents.value = LoadProposalsFailedEvent(query, error)
+            }
+        }
+    }
+
+    fun loadNextPage(){
+        launch {
+            mEvents.value = LoadingProposalsEvent(lastSearched)
+            try {
+                val proposals = donorRepository.getProposal(lastSearched,lastGradeType,lastSchoolType,
+                        lastState,lastSortBy,lastIndex,lastMax).await()
+                lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
+                mStates.value = AppendedProposalListState.from(proposals, lastIndex!!)
+            } catch (error: Throwable) {
+                mEvents.value = LoadProposalsFailedEvent(lastSearched, error)
             }
         }
     }
@@ -41,20 +72,40 @@ class SearchViewModel(
     data class ProposalListState(
             val id: String,
             val first: Proposal,
-            val lasts: List<Proposal>
+            val lasts: MutableList<Proposal>
     ) : State() {
         companion object {
-            fun from(list: List<Proposal>): ProposalListState {
-                return if (list.isEmpty()) error(" list should not be empty")
-                else {
-                    val first = list.first()
-                    val id = first.id
-                    ProposalListState(id!!, first, list.takeLast(list.size - 1))
+            fun from(list: MutableList<Proposal>,lastIndex:String): ProposalListState {
+                return when {
+                    list.isEmpty() -> error(" list should not be empty")
+                    else -> {
+                        val first = list.first()
+                        val id = first.id
+                        ProposalListState(id!!, first, list.takeLast(list.size - 1) as MutableList<Proposal>)
+                    }
+                }
+            }
+        }
+    }
+    data class AppendedProposalListState(
+            val id: String,
+            val first: Proposal,
+            val lasts: MutableList<Proposal>
+    ) : State() {
+        companion object {
+            fun from(list: MutableList<Proposal>,lastIndex:String): AppendedProposalListState {
+                return when {
+                    list.isEmpty() -> error(" list should not be empty")
+                    else -> {
+                        val first = list.first()
+                        val id = first.id
+                        AppendedProposalListState(id!!, first, list.takeLast(list.size - 1) as MutableList<Proposal>)
+                    }
                 }
             }
         }
     }
 
-    data class LoadingProposalsEvent(val query: String) : Event()
-    data class LoadProposalsFailedEvent(val query: String, val error: Throwable) : Event()
+    data class LoadingProposalsEvent(val query: String?) : Event()
+    data class LoadProposalsFailedEvent(val query: String?, val error: Throwable) : Event()
 }

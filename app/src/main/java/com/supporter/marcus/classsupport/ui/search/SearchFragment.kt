@@ -1,23 +1,19 @@
 package com.supporter.marcus.classsupport.ui.search
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.search_fragment.*
 import com.supporter.marcus.classsupport.R
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
 import org.koin.android.architecture.ext.viewModel
 
 
 class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,16 +23,22 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadNewLocation("Yoga")
+        viewModel.loadNewProposals("Yoga",null,null,null,null,"20","50")
         prepareListView()
+        more.setOnClickListener { search() }
         viewModel.states.observe(this, Observer { state ->
                 state?.let {
                 when (state) {
+                    is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.lasts.map {
+                        ProposalItem.from(
+                                it
+                        )
+                    } as MutableList<ProposalItem>)
                     is SearchViewModel.ProposalListState -> showProposalsItemList(state.lasts.map {
                         ProposalItem.from(
                                 it
                         )
-                    })
+                    } as MutableList<ProposalItem>)
                 }
             }
         })
@@ -46,12 +48,16 @@ class SearchFragment : Fragment() {
 //        )
 
     }
+
+    private fun search(){
+        viewModel.loadNextPage()
+    }
     private fun prepareListView() {
         proposalList.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         proposalList.adapter = SearchListAdapter(
                 activity!!,
-                emptyList(),
+                mutableListOf(),
                 ::onSearchItemSelected
         )
     }
@@ -59,8 +65,11 @@ class SearchFragment : Fragment() {
     private fun onSearchItemSelected(resultItem: ProposalItem) {
 
     }
-
-    private fun showProposalsItemList(newList: List<ProposalItem>) {
+    private fun showAddedProposalsItemList(newList: MutableList<ProposalItem>) {
+        val adapter: SearchListAdapter = proposalList.adapter as SearchListAdapter
+        adapter.addAll(newList)
+    }
+    private fun showProposalsItemList(newList: MutableList<ProposalItem>) {
         val adapter: SearchListAdapter = proposalList.adapter as SearchListAdapter
         adapter.list = newList
         adapter.notifyDataSetChanged()
