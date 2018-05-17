@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "6")
+        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "10")
         prepareListView()
         viewModel.states.observe(this, Observer { state ->
             state?.let {
@@ -127,7 +127,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(query, null, null, null, null, null, "6")
+        viewModel.loadNewProposals(query, null, null, null, null, null, "10")
     }
 
     private fun loadNextpage() {

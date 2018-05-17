@@ -40,9 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up Action Bar
         val navController = host.navController
-        setupActionBar(navController)
 
-        setupNavigationMenu(navController)
 
         setupBottomNavMenu(navController)
 
@@ -65,23 +63,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupNavigationMenu(navController: NavController) {
-        findViewById<NavigationView>(R.id.nav_view)?. let { navigationView ->
-            NavigationUI.setupWithNavController(navigationView, navController)
-        }
-    }
-
-    private fun setupActionBar(navController: NavController) {
-        drawerLayout = findViewById(R.id.drawer_layout)
-
-       // NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val retValue = super.onCreateOptionsMenu(menu)
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        return retValue
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Have the NavHelper look for an action or destination matching the menu
