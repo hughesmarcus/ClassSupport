@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
 import com.supporter.marcus.classsupport.data.remote.json.Proposal
 import com.supporter.marcus.classsupport.ui.Event
+import com.supporter.marcus.classsupport.ui.LoadingMoreState
 import com.supporter.marcus.classsupport.ui.State
 import com.supporter.marcus.classsupport.util.mvvm.RxViewModel
 import com.supporter.marcus.classsupport.util.mvvm.SingleLiveEvent
@@ -48,20 +49,24 @@ class SearchViewModel(
                 lastState = state
                 lastSortBy = sortBy
                 mStates.value = ProposalListState.from(proposals, proposals.lastIndex.toString())
+                mEvents.value = LoadingProposalsEventEnded(query)
             } catch (error: Throwable) {
                 mEvents.value = LoadProposalsFailedEvent(query, error)
             }
         }
     }
 
-    fun loadNextPage(){
+    fun loadNextPage() {
         launch {
             mEvents.value = LoadingProposalsEvent(lastSearched)
+            mStates.value = LoadingMoreState
             try {
                 val proposals = donorRepository.getProposal(lastSearched,lastGradeType,lastSchoolType,
                         lastState,lastSortBy,lastIndex,lastMax).await()
                 lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
                 mStates.value = AppendedProposalListState.from(proposals, lastIndex!!)
+                mEvents.value = LoadingProposalsEventEnded(lastSearched)
+
             } catch (error: Throwable) {
                 mEvents.value = LoadProposalsFailedEvent(lastSearched, error)
             }
@@ -108,4 +113,5 @@ class SearchViewModel(
 
     data class LoadingProposalsEvent(val query: String?) : Event()
     data class LoadProposalsFailedEvent(val query: String?, val error: Throwable) : Event()
+    data class LoadingProposalsEventEnded(val query: String?) : Event()
 }

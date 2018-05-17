@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.supporter.marcus.classsupport.R
 import java.util.Collections.addAll
 import android.content.ClipData.Item
-
+import android.support.v7.widget.CardView
 
 
 class SearchListAdapter(
@@ -36,7 +36,7 @@ class SearchListAdapter(
     override fun getItemCount() = list.size
 
     inner class SearchResultHolder(item: View) : RecyclerView.ViewHolder(item) {
-        private val proposalItemLayout = item.findViewById<android.support.constraint.ConstraintLayout>(R.id.proposalItemLayout)
+        private val proposalItemLayout = item.findViewById<CardView>(R.id.proposalItemLayout)
 
         private val proposaldesc = item.findViewById<TextView>(R.id.prop_desc)
         private val teacher = item.findViewById<TextView>(R.id.teacher_name)

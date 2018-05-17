@@ -16,12 +16,16 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.supporter.marcus.classsupport.ui.search.SearchFragment
+import kotlinx.android.synthetic.main.navigation_activity.*
 
 /**
  * A simple activity demonstrating use of a NavHostFragment with a navigation drawer.
  */
 class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
+    private lateinit var searchView: MaterialSearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,12 +80,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val retValue = super.onCreateOptionsMenu(menu)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        // The NavigationView already has these same navigation items, so we only add
-        // navigation items to the menu here if there isn't a NavigationView
-        if (navigationView == null) {
-            menuInflater.inflate(R.menu.menu_overflow, menu)
-            return true
-        }
         return retValue
     }
 
@@ -97,5 +95,16 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(drawerLayout,
                 Navigation.findNavController(this, R.id.my_nav_host_fragment))
+    }
+
+
+
+
+    override  fun onBackPressed() {
+        if (search_view.isSearchOpen) {
+            search_view.closeSearch()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

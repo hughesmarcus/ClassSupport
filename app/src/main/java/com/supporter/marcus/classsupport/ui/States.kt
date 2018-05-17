@@ -10,6 +10,8 @@ open class State
  */
 object LoadingState : State()
 
+object LoadingMoreState : State()
+
 /**
  * Generic Error state
  * @param error - caught error
