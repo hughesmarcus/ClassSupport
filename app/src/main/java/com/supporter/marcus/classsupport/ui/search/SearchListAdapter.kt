@@ -1,12 +1,14 @@
 package com.supporter.marcus.classsupport.ui.search
 
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.supporter.marcus.classsupport.R
 import android.support.v7.widget.CardView
+import android.widget.ImageButton
+import com.supporter.marcus.classsupport.util.ext.inflate
+import com.supporter.marcus.classsupport.util.ext.loadUrl
 
 
 class SearchListAdapter(
@@ -15,7 +17,7 @@ class SearchListAdapter(
 ) : RecyclerView.Adapter<SearchListAdapter.SearchResultHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_proposal, parent, false)
+        val view = parent.inflate(R.layout.item_proposal)
         return SearchResultHolder(view)
     }
 
@@ -36,16 +38,18 @@ class SearchListAdapter(
         private val proposaldesc = item.findViewById<TextView>(R.id.prop_desc)
         private val teacher = item.findViewById<TextView>(R.id.teacher_name)
         private val school = item.findViewById<TextView>(R.id.school)
+        private val image = item.findViewById<ImageButton>(R.id.proposal_image)
 
 
         fun display(
-                proposalmodel: ProposalItem,
+                proposal: ProposalItem,
                 onClick: (ProposalItem) -> Unit
         ) {
-            proposalItemLayout.setOnClickListener { onClick(proposalmodel) }
-            proposaldesc.text = proposalmodel.desc
-            teacher.text = proposalmodel.teacher
-            school.text = proposalmodel.school
+            proposalItemLayout.setOnClickListener { onClick(proposal) }
+            proposaldesc.text = proposal.desc
+            teacher.text = proposal.teacher
+            school.text = proposal.school
+            image.loadUrl(proposal.imageUrl)
 
 
         }

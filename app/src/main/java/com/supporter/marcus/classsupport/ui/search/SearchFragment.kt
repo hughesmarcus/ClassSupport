@@ -13,7 +13,10 @@ import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.IBinder
 import android.support.v7.widget.RecyclerView
 import android.view.inputmethod.InputMethodManager
+import android.widget.ProgressBar
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.supporter.marcus.classsupport.util.ext.gone
+import com.supporter.marcus.classsupport.util.ext.visible
 
 
 class SearchFragment : Fragment() {
@@ -21,7 +24,7 @@ class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var searchView: MaterialSearchView
     var loading: Boolean = false
-
+    private lateinit var spinner: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,26 +42,18 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
-
+        spinner = progressbar_search
         initsearchview()
         viewModel.loadNewProposals("Yoga", null, null, null, null, null, "6")
         prepareListView()
-        //   more.setOnClickListener { search() }
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
                     is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.lasts.map {
-                        ProposalItem.from(
-                                it
-                        )
-
+                        ProposalItem.from(it)
                     } as MutableList<ProposalItem>)
-
                     is SearchViewModel.ProposalListState -> showProposalsItemList(state.lasts.map {
-                        ProposalItem.from(
-                                it
-                        )
-
+                        ProposalItem.from(it)
                     } as MutableList<ProposalItem>)
                 }
             }
@@ -85,10 +80,12 @@ class SearchFragment : Fragment() {
 
     private fun loadingEnd() {
         loading = false
+        spinner.gone()
     }
 
     private fun loadingStart() {
         loading = true
+        spinner.visible()
     }
 
     private fun initsearchview() {

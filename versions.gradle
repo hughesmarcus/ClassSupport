@@ -10,7 +10,7 @@ ext {
 
     androidGradlePlugin = "3.0.1"
     buildToolsVersion = '27.0.3'
-    supportLibraryVersion = '27.1.0'
+    supportLibraryVersion = '27.1.1'
 
     // Framework
     okhttp_version = '3.8.1'
@@ -18,10 +18,12 @@ ext {
     rxjava_version = '2.1.7'
     anko_version='0.10.4'
 
-    koin_version = '0.9.1'
+    koin_version = '0.9.3'
 
-    androidArchitectureVersion = "1.1.0"
-    roomVersion = "1.0.0"
+    androidArchitectureVersion = "1.1.1"
+    roomVersion = "1.1.0"
 
     navigation_version = "1.0.0-alpha01"
+
+    glide_version = "4.7.1"
 }
