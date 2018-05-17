@@ -12,7 +12,14 @@
 
     </fragment>
     <fragment
-        android:id="@+id/home"
+        android:id="@+id/launcher_home"
+        android:name="com.supporter.marcus.classsupport.ui.home.HomeFragment"
+        tools:layout="@layout/main_fragment">
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/launcher_favorites"
         android:name="com.supporter.marcus.classsupport.ui.home.HomeFragment"
         tools:layout="@layout/main_fragment">
 

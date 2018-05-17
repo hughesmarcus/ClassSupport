@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@id/launcher_search"
-        android:title="Search" />
-    <item
-        android:id="@id/home"
+        android:id="@id/launcher_home"
 
-        android:title="home" />
+        android:title="@string/home" />
+    <item
+        android:id="@id/launcher_search"
+        android:title="@string/search" />
+    <item
+        android:id="@id/launcher_favorites"
+        android:title="@string/favorites" />
+
 </menu>

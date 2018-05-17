@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.search.SearchFilter">
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="58dp"
+            android:weightSum="1"
+            android:id="@+id/radioGroup">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Most relevant"
+                android:button="@android:color/transparent"
+                android:id="@+id/radioButton"
+                android:drawablePadding="102dp"
+                android:drawableRight="@drawable/radiobutton_drawable"
+                android:checked="false"
+                android:textSize="25dp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alpha"
+                android:button="@android:color/transparent"
+                android:drawablePadding="190dp"
+                android:id="@+id/radioButton2"
+                android:drawableRight="@drawable/radiobutton_drawable"
+                android:checked="false"
+                android:textSize="25dp"
+                android:layout_weight="0.13" />
+        </RadioGroup>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

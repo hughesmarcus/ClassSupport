@@ -25,6 +25,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchView: MaterialSearchView
     var loading: Boolean = false
     private lateinit var spinner: ProgressBar
+    private var searchQuery: String = "Yoga"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,10 +42,11 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        viewModel.loadNewProposals("Yoga", null, null, null, null, null, "6")
+        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "6")
         prepareListView()
         viewModel.states.observe(this, Observer { state ->
             state?.let {
@@ -76,6 +78,15 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putString("Query", searchQuery)
+
+    }
+
+
+
+
    private fun loadingFailed() {}
 
     private fun loadingEnd() {
@@ -92,6 +103,7 @@ class SearchFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                searchQuery = query
                 search(query)
 
                 return false

@@ -3,7 +3,9 @@ package com.supporter.marcus.classsupport.ui.search
 import com.supporter.marcus.classsupport.data.remote.json.Proposal
 
 data class ProposalItem(val id: String, val desc: String, val teacher: String, val costToComplete: String,
-                        val school: String, val city: String, val state: String, val imageUrl: String) {
+                        val school: String, val city: String, val state: String,
+                        val imageUrl: String, val title: String,
+                        val totalPrice: String, val prefunded: String, val donors: String) {
     companion object {
         fun from(proposal: Proposal) = ProposalItem(
                 proposal.id!!,
@@ -13,7 +15,11 @@ data class ProposalItem(val id: String, val desc: String, val teacher: String, v
                 proposal.schoolName!!,
                 proposal.city!!,
                 proposal.state!!,
-                proposal.thumbImageURL!!
+                proposal.retinaImageURL!!,
+                proposal.title!!,
+                proposal.totalPrice!!,
+                proposal.percentFunded!!,
+                proposal.numDonors!!
 
         )
     }
