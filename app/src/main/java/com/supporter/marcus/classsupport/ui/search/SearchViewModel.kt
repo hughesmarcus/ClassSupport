@@ -48,7 +48,7 @@ class SearchViewModel(
                 lastSchoolType = schoolType
                 lastState = state
                 lastSortBy = sortBy
-                mStates.value = ProposalListState.from(proposals, proposals.lastIndex.toString())
+                mStates.value = ProposalListState.from(proposals)
                 mEvents.value = LoadingProposalsEventEnded(query)
             } catch (error: Throwable) {
                 mEvents.value = LoadProposalsFailedEvent(query, error)
@@ -64,7 +64,7 @@ class SearchViewModel(
                 val proposals = donorRepository.getProposal(lastSearched,lastGradeType,lastSchoolType,
                         lastState,lastSortBy,lastIndex,lastMax).await()
                 lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
-                mStates.value = AppendedProposalListState.from(proposals, lastIndex!!)
+                mStates.value = AppendedProposalListState.from(proposals)
                 mEvents.value = LoadingProposalsEventEnded(lastSearched)
 
             } catch (error: Throwable) {
@@ -80,7 +80,7 @@ class SearchViewModel(
             val lasts: MutableList<Proposal>
     ) : State() {
         companion object {
-            fun from(list: MutableList<Proposal>,lastIndex:String): ProposalListState {
+            fun from(list: MutableList<Proposal>): ProposalListState {
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {
@@ -98,7 +98,7 @@ class SearchViewModel(
             val lasts: MutableList<Proposal>
     ) : State() {
         companion object {
-            fun from(list: MutableList<Proposal>,lastIndex:String): AppendedProposalListState {
+            fun from(list: MutableList<Proposal>): AppendedProposalListState {
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {

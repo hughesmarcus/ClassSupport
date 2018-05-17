@@ -130,7 +130,6 @@ class SearchFragment : Fragment() {
         proposalList.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         proposalList.adapter = SearchListAdapter(
-                activity!!,
                 mutableListOf(),
                 ::onSearchItemSelected
         )
@@ -157,6 +156,7 @@ class SearchFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.main_menu, menu)
         val item = menu!!.findItem(R.id.action_search)
+        searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         searchView.setMenuItem(item)
 
     }

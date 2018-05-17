@@ -1,20 +1,15 @@
 package com.supporter.marcus.classsupport.ui.search
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.supporter.marcus.classsupport.R
-import java.util.Collections.addAll
-import android.content.ClipData.Item
 import android.support.v7.widget.CardView
 
 
 class SearchListAdapter(
-        val context: Context,
         var list: MutableList<ProposalItem>,
         private val onDetailSelected: (ProposalItem) -> Unit
 ) : RecyclerView.Adapter<SearchListAdapter.SearchResultHolder>() {
@@ -25,7 +20,7 @@ class SearchListAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchResultHolder, position: Int) {
-        holder.display(list[position], context, onDetailSelected)
+        holder.display(list[position], onDetailSelected)
     }
 
     fun addAll(items: List<ProposalItem>) {
@@ -45,7 +40,6 @@ class SearchListAdapter(
 
         fun display(
                 proposalmodel: ProposalItem,
-                context: Context,
                 onClick: (ProposalItem) -> Unit
         ) {
             proposalItemLayout.setOnClickListener { onClick(proposalmodel) }

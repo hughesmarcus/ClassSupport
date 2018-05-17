@@ -1,7 +1,6 @@
 package com.supporter.marcus.classsupport.data.remote.json
 
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
 
