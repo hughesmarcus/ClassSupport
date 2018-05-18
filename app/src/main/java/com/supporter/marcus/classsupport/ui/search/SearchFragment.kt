@@ -39,15 +39,20 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
-        searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
-        spinner = progressbar_search
-        initsearchview()
-        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "10")
-        prepareListView()
+        viewModel.states.removeObservers(this)
+        viewModel.events.removeObservers(this)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
@@ -71,6 +76,16 @@ class SearchFragment : Fragment() {
                 }
             }
         })
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
+        searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
+        spinner = progressbar_search
+        initsearchview()
+        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "10")
+        prepareListView()
+
 
 //        view.findViewById<Button>(R.id.navigate_action_bt)?.setOnClickListener(
 //                Navigation.createNavigateOnClickListener(R.id.next_action, null)
