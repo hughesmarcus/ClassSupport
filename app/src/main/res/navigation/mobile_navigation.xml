@@ -26,6 +26,15 @@
 
 
     </fragment>
+    <fragment
+        android:id="@+id/action_filter"
+        android:name="com.supporter.marcus.classsupport.ui.search.SearchFilter"
+        tools:layout="@layout/search_filter_fragment">
 
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_search"></action>
+
+    </fragment>
 
 </navigation>

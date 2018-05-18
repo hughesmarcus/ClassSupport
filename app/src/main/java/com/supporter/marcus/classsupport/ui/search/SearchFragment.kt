@@ -17,11 +17,13 @@ import android.widget.ProgressBar
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.supporter.marcus.classsupport.util.ext.gone
 import com.supporter.marcus.classsupport.util.ext.visible
+import org.koin.android.architecture.ext.sharedViewModel
 
 
 class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
+    private val filterViewModel: SearchFilterViewModel by sharedViewModel()
     private lateinit var searchView: MaterialSearchView
     var loading: Boolean = false
     private lateinit var spinner: ProgressBar
@@ -77,13 +79,17 @@ class SearchFragment : Fragment() {
             }
         })
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, null, null, null, null, null, "10")
+        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, filterViewModel.getGradeList(),
+                filterViewModel.getSchoolType(),
+                filterViewModel.getState(), filterViewModel.getSortBY(),
+                null, "10")
         prepareListView()
 
 
@@ -100,9 +106,7 @@ class SearchFragment : Fragment() {
     }
 
 
-
-
-   private fun loadingFailed() {}
+    private fun loadingFailed() {}
 
     private fun loadingEnd() {
         loading = false
@@ -142,7 +146,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(query, null, null, null, null, null, "10")
+        viewModel.loadNewProposals(query, null, null, null, filterViewModel.getSortBY(), null, "10")
     }
 
     private fun loadNextpage() {

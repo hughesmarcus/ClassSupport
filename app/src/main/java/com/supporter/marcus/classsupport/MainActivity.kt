@@ -17,8 +17,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.supporter.marcus.classsupport.ui.search.SearchFilterViewModel
 import com.supporter.marcus.classsupport.ui.search.SearchFragment
 import kotlinx.android.synthetic.main.navigation_activity.*
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * A simple activity demonstrating use of a NavHostFragment with a navigation drawer.
@@ -26,6 +28,8 @@ import kotlinx.android.synthetic.main.navigation_activity.*
 class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private lateinit var searchView: MaterialSearchView
+    private val filterViewModel by viewModel<SearchFilterViewModel>()
+    public val navController = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,9 +69,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Have the NavHelper look for an action or destination matching the menu
-        // item id and navigate there if found.
-        // Otherwise, bubble up to the parent.
+
         return NavigationUI.onNavDestinationSelected(item,
                 Navigation.findNavController(this, R.id.my_nav_host_fragment))
                 || super.onOptionsItemSelected(item)
