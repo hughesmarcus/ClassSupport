@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
  * Used to save and share filter options between SearchViewFragment and SearchFilter
  */
 class SearchFilterViewModel : ViewModel() {
+    private var searched: String? = "Yoga"
     private var gradeType: String? = null
     private var schoolType: String? = null
     private var state: String? = null
@@ -13,6 +14,10 @@ class SearchFilterViewModel : ViewModel() {
 
     fun getGradeList(): String? {
         return gradeType
+    }
+
+    fun getSearch(): String? {
+        return searched
     }
 
     fun getSchoolType(): String? {
@@ -27,6 +32,9 @@ class SearchFilterViewModel : ViewModel() {
         return sortBy
     }
 
+    fun setSearched(search: String?) {
+        searched = search
+    }
     fun setGradeList(grade: String?) {
         gradeType = grade
     }

@@ -12,6 +12,7 @@ import org.koin.android.architecture.ext.viewModel
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.IBinder
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import com.miguelcatalan.materialsearchview.MaterialSearchView
@@ -32,25 +33,6 @@ class SearchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.search_fragment, container, false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        proposalList.clearOnScrollListeners()
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        viewModel.states.removeObservers(this)
-        viewModel.events.removeObservers(this)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        //Observe States
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
@@ -74,16 +56,33 @@ class SearchFragment : Fragment() {
                 }
             }
         })
+        return inflater.inflate(R.layout.search_fragment, container, false)
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("HELOO", "ViewDestroyed")
+        proposalList.clearOnScrollListeners()
+        viewModel.states.removeObservers(this)
+        viewModel.events.removeObservers(this)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d("HELOO", "ActivityCreated")
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("HELOO", "viewCreated")
         searchQuery = viewModel.getQuery()
         if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        if (savedInstanceState == null) viewModel.loadNewProposals(searchQuery, filterViewModel.getGradeList(),
+        if (savedInstanceState == null) viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(),
                 filterViewModel.getSchoolType(),
                 filterViewModel.getState(), filterViewModel.getSortBY(),
                 null, "10")
@@ -115,6 +114,7 @@ class SearchFragment : Fragment() {
         searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchQuery = query
+                filterViewModel.setSearched(query)
                 search(query)
 
                 return false
@@ -138,7 +138,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(query, filterViewModel.getSchoolType(), null, null, filterViewModel.getSortBY(), null, "10")
+        viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getSchoolType(), null, null, filterViewModel.getSortBY(), null, "10")
     }
 
     private fun loadNextpage() {

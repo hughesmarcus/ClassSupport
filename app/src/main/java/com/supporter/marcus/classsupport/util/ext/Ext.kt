@@ -27,5 +27,5 @@ fun ViewGroup.inflate(layoutRes: Int): View {
 }
 
 fun ImageView.loadUrl(url: String) {
-    Picasso.get().load(url).into(this)
+    Picasso.get().load(url).fit().centerCrop().into(this)
 }

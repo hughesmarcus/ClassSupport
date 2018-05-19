@@ -36,5 +36,6 @@
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_behavior="com.supporter.marcus.classsupport.util.BottomNavigationBehavior"
         app:menu="@menu/menu_bottom_nav" />
 </LinearLayout>
