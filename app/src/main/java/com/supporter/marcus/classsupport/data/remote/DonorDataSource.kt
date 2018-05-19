@@ -16,5 +16,4 @@ interface DonorDataSource {
                        @Query("max") max: String?
     ): Deferred<DonorSearchResult>
 
-
 }

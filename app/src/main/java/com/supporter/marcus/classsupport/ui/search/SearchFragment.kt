@@ -27,7 +27,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchView: MaterialSearchView
     var loading: Boolean = false
     private lateinit var spinner: ProgressBar
-    private var searchQuery: String = "Yoga"
+    private var searchQuery: String? = "Yoga"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,13 +48,9 @@ class SearchFragment : Fragment() {
         viewModel.events.removeObservers(this)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        //Observe States
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
@@ -82,6 +78,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchQuery = viewModel.getQuery()
         if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
@@ -91,11 +88,6 @@ class SearchFragment : Fragment() {
                 filterViewModel.getState(), filterViewModel.getSortBY(),
                 null, "10")
         prepareListView()
-
-
-//        view.findViewById<Button>(R.id.navigate_action_bt)?.setOnClickListener(
-//                Navigation.createNavigateOnClickListener(R.id.next_action, null)
-//        )
 
     }
 
@@ -146,7 +138,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(query, null, null, null, filterViewModel.getSortBY(), null, "10")
+        viewModel.loadNewProposals(query, filterViewModel.getSchoolType(), null, null, filterViewModel.getSortBY(), null, "10")
     }
 
     private fun loadNextpage() {

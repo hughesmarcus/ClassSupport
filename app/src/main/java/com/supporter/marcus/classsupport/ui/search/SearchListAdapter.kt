@@ -58,8 +58,7 @@ class SearchListAdapter(
             title.text = proposal.title
             image.loadUrl(proposal.imageUrl)
             progressbar.progress = proposal.prefunded.toInt()
-            if (proposal.costToComplete != null) stillNeeded.text = "$" + proposal.costToComplete
-            else stillNeeded.text = "Funded"
+            stillNeeded.text = "$" + proposal.costToComplete
             donors_num.text = proposal.donors
 
         }

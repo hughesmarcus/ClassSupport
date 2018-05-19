@@ -33,7 +33,9 @@ class SearchViewModel(
     val events: LiveData<Event>
         get() = mEvents
 
-
+    fun getQuery(): String? {
+        return lastSearched
+    }
     fun loadNewProposals(query: String? ,gradeType: String?,
                          schoolType: String?,state: String?,
                          sortBy: String?,index: String?,max: String?) {

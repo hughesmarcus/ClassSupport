@@ -1,45 +1,46 @@
 package com.supporter.marcus.classsupport.ui.search
 
 import android.arch.lifecycle.ViewModel
-import com.supporter.marcus.classsupport.util.mvvm.RxViewModel
-import com.supporter.marcus.classsupport.util.rx.SchedulerProvider
 
+/**
+ * Used to save and share filter options between SearchViewFragment and SearchFilter
+ */
 class SearchFilterViewModel : ViewModel() {
-    private var lastGradeType: String? = null
-    private var lastSchoolType: String? = null
-    private var lastState: String? = null
-    private var lastSortBy: String? = "4"
+    private var gradeType: String? = null
+    private var schoolType: String? = null
+    private var state: String? = null
+    private var sortBy: String? = "4"
 
     fun getGradeList(): String? {
-        return lastGradeType
+        return gradeType
     }
 
     fun getSchoolType(): String? {
-        return lastSchoolType
+        return schoolType
     }
 
     fun getState(): String? {
-        return lastState
+        return state
     }
 
     fun getSortBY(): String? {
-        return lastSortBy
+        return sortBy
     }
 
-    fun setGradeList(grade: String) {
-        lastGradeType = grade
+    fun setGradeList(grade: String?) {
+        gradeType = grade
     }
 
     fun setSchoolType(school: String) {
-        lastSchoolType = school
+        schoolType = school
     }
 
     fun setState(state: String) {
-        lastState = state
+        this.state = state
     }
 
     fun setSortBY(sort: String?) {
-        lastSortBy = sort
+        sortBy = sort
     }
 
 

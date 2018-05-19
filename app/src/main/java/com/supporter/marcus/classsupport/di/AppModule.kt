@@ -3,6 +3,7 @@ package com.supporter.marcus.classsupport.di
 import com.supporter.marcus.classsupport.data.DonorRepository
 import com.supporter.marcus.classsupport.data.DonorRepositoryImpl
 import com.supporter.marcus.classsupport.ui.detail.ProposalDetailViewModel
+import com.supporter.marcus.classsupport.ui.home.HomeViewModel
 import com.supporter.marcus.classsupport.ui.search.SearchFilterViewModel
 import com.supporter.marcus.classsupport.ui.search.SearchViewModel
 import com.supporter.marcus.classsupport.util.rx.ApplicationSchedulerProvider
@@ -18,6 +19,7 @@ val donorAppModule = applicationContext {
     viewModel { SearchViewModel(get(), get()) }
     viewModel { ProposalDetailViewModel(get()) }
     viewModel { SearchFilterViewModel() }
+    viewModel { HomeViewModel(get(), get()) }
 
 
 

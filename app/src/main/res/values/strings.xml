@@ -26,4 +26,23 @@
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
 
+    <string-array name="grade_level_array">
+        <item>Any</item>
+        <item>Grades PreK-2</item>
+        <item>Grades 3-5</item>
+        <item>Grades 6-8</item>
+        <item>High School</item>
+        <item>Adult Ed</item>
+    </string-array>
+    <string-array name="sort_options_array">
+        <item>None</item>
+        <item>Urgency</item>
+        <item>Poverty</item>
+        <item>Cost</item>
+        <item>Popularity</item>
+        <item>Expiration</item>
+        <item>Newest</item>
+    </string-array>
+
+
 </resources>
