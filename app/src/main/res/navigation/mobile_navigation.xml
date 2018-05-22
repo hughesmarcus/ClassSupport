@@ -5,10 +5,12 @@
     app:startDestination="@+id/launcher_search">
     <fragment
         android:id="@+id/launcher_search"
+        android:label="Search"
         android:name="com.supporter.marcus.classsupport.ui.search.SearchFragment"
         tools:layout="@layout/search_fragment">
-
-
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_proposal_detail"></action>
 
     </fragment>
     <fragment
@@ -24,6 +26,19 @@
         tools:layout="@layout/main_fragment">
 
 
+    </fragment>
+    <fragment
+        android:id="@+id/launcher_proposal_detail"
+        android:name="com.supporter.marcus.classsupport.ui.detail.ProposalDetailFragment"
+        tools:layout="@layout/fragment_proposal_detail">
+        <argument
+            android:name="proposalId"
+            android:defaultValue="0"
+            app:type="string" />
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_webview"></action>
 
     </fragment>
     <fragment
@@ -34,6 +49,17 @@
         <action
             android:id="@+id/next_action"
             app:destination="@+id/launcher_search"></action>
+
+    </fragment>
+    <fragment
+        android:id="@+id/launcher_webview"
+        android:name="com.supporter.marcus.classsupport.ui.detail.WebViewFragment"
+        tools:layout="@layout/fragment_web_view">
+        <argument
+            android:name="weburl"
+            android:defaultValue="0"
+            app:type="string" />
+
 
     </fragment>
 

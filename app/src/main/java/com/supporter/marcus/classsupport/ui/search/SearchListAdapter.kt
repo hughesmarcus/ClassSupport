@@ -1,11 +1,13 @@
 package com.supporter.marcus.classsupport.ui.search
 
+import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.supporter.marcus.classsupport.R
 import android.support.v7.widget.CardView
+import android.text.Html
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -52,10 +54,16 @@ class SearchListAdapter(
                 onClick: (ProposalItem) -> Unit
         ) {
             proposalItemLayout.setOnClickListener { onClick(proposal) }
-            proposaldesc.text = proposal.desc
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                proposaldesc.text = Html.fromHtml(proposal.desc, Html.FROM_HTML_MODE_COMPACT)
+                title.text = Html.fromHtml(proposal.title, Html.FROM_HTML_MODE_COMPACT)
+            } else {
+                proposaldesc.text = Html.fromHtml(proposal.desc)
+                title.text = Html.fromHtml(proposal.title)
+            }
             teacher.text = proposal.teacher
             school.text = proposal.school
-            title.text = proposal.title
+
             image.loadUrl(proposal.imageUrl)
             progressbar.progress = proposal.prefunded.toInt()
             stillNeeded.text = "$" + proposal.costToComplete

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
+import androidx.navigation.fragment.NavHostFragment
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.supporter.marcus.classsupport.util.ext.gone
 import com.supporter.marcus.classsupport.util.ext.visible
@@ -29,6 +30,7 @@ class SearchFragment : Fragment() {
     var loading: Boolean = false
     private lateinit var spinner: ProgressBar
     private var searchQuery: String? = "Yoga"
+    private var new: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -59,6 +61,10 @@ class SearchFragment : Fragment() {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("HELOO", "ViewDetached")
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -78,21 +84,18 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("HELOO", "viewCreated")
         searchQuery = viewModel.getQuery()
-        if (savedInstanceState != null) searchQuery = savedInstanceState.getString("Query")
+
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        if (savedInstanceState == null) viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(),
+        if (new) {
+            viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(),
                 filterViewModel.getSchoolType(),
                 filterViewModel.getState(), filterViewModel.getSortBY(),
-                null, "10")
+                    null, "25")
+            new = false
+        }
         prepareListView()
-
-    }
-
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        super.onSaveInstanceState(savedInstanceState)
-        savedInstanceState.putString("Query", searchQuery)
 
     }
 
@@ -138,7 +141,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getSchoolType(), null, null, filterViewModel.getSortBY(), null, "10")
+        viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(), filterViewModel.getSchoolType(), filterViewModel.getState(), filterViewModel.getSortBY(), null, "25")
     }
 
     private fun loadNextpage() {
@@ -159,7 +162,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun onSearchItemSelected(resultItem: ProposalItem) {
-
+        val action = SearchFragmentDirections.next_action()
+        action.setProposalId(resultItem.id)
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     private fun showAddedProposalsItemList(newList: MutableList<ProposalItem>) {

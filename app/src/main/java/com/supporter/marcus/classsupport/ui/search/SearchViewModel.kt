@@ -42,7 +42,7 @@ class SearchViewModel(
         launch {
             mEvents.value = LoadingProposalsEvent(query)
             try {
-                val proposals = donorRepository.getProposal(query,gradeType,schoolType,state,sortBy,index,max).await()
+                val proposals = donorRepository.getProposals(query, gradeType, schoolType, state, sortBy, index, max).await()
                 lastSearched = query
                 lastIndex = proposals.lastIndex.toString()
                 lastGradeType = gradeType
@@ -63,7 +63,7 @@ class SearchViewModel(
             mEvents.value = LoadingProposalsEvent(lastSearched)
             mStates.value = LoadingMoreState
             try {
-                val proposals = donorRepository.getProposal(lastSearched,lastGradeType,lastSchoolType,
+                val proposals = donorRepository.getProposals(lastSearched, lastGradeType, lastSchoolType,
                         lastState,lastSortBy,lastIndex,lastMax).await()
                 lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
                 mStates.value = AppendedProposalListState.from(proposals)

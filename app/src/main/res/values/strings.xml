@@ -25,6 +25,12 @@
     <string name="still_needed">still needed</string>
     <string name="clear">Clear</string>
     <string name="apply">Apply</string>
+    <string name="flexible_seating_to_help_shape_young_minds">Flexible Seating to Help Shape Young Minds!</string>
+    <string name="description">I need to attend the Breathe For Change training so that I will learn the necessary skills to be able to champion for the social-emotional learning and health of my students.</string>
+    <string name="TeacherName">Ms.Mason</string>
+    <string name="SchoolName">Gardner Pilot Academy</string>
+    <string name="StillNeeded">still needed</string>
+    <string name="favorite">Favorite</string>
 
     <string-array name="grade_level_array">
         <item>Any</item>

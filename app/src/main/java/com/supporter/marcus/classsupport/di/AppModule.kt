@@ -17,7 +17,7 @@ import org.koin.dsl.module.applicationContext
 val donorAppModule = applicationContext {
 
     viewModel { SearchViewModel(get(), get()) }
-    viewModel { ProposalDetailViewModel(get()) }
+    viewModel { ProposalDetailViewModel(get(), get()) }
     viewModel { SearchFilterViewModel() }
     viewModel { HomeViewModel(get(), get()) }
 

@@ -16,4 +16,10 @@ interface DonorDataSource {
                        @Query("max") max: String?
     ): Deferred<DonorSearchResult>
 
+    @GET("json_feed.html?")
+    fun getProjectById(@Query("id") id: String?,
+                       @Query("APIKey") key: String?,
+                       @Query("showSynopsis") showSynopsis: String
+
+    ): Deferred<DonorSearchResult>
 }
