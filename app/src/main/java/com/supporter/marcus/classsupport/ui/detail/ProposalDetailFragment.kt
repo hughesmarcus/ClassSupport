@@ -49,8 +49,11 @@ class ProposalDetailFragment : Fragment() {
         detail_proverty_level.text = proposal.povertyLevel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             detail_subject.text = Html.fromHtml(proposal.subject!!.name, Html.FROM_HTML_MODE_COMPACT)
+            detail_title.text = Html.fromHtml(proposal.title, Html.FROM_HTML_MODE_COMPACT)
         } else {
             detail_subject.text = Html.fromHtml(proposal.subject!!.name)
+            detail_title.text = Html.fromHtml(proposal.title)
+
 
         }
         detail_grade_level.text = proposal.gradeLevel!!.name
@@ -62,7 +65,6 @@ class ProposalDetailFragment : Fragment() {
             NavHostFragment.findNavController(this).navigate(action)
         }
         detail_desc.text = proposal.shortDescription
-        detail_title.text = proposal.title
         imageView.loadUrl(proposal.retinaImageURL!!)
         synopsis_webview.settings.defaultTextEncodingName = "utf-8"
         synopsis_webview.loadDataWithBaseURL(null, proposal.synopsis!!.replace("\\r\\n", "<br>").replace("\\n", "<br>").replace("&lt;", "<").replace("&gt;", ">"), "text/html; charset=utf-8", "utf-8", null)

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private lateinit var searchView: MaterialSearchView
     private val filterViewModel by viewModel<SearchFilterViewModel>()
-    public val navController = null
+    val navController = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
                 Integer.toString(destination.id)
             }
 
-            Toast.makeText(this@MainActivity, "Navigated to $dest",
-                    Toast.LENGTH_SHORT).show()
-            Log.d("NavigationActivity", "Navigated to $dest")
+            //Toast.makeText(this@MainActivity, "Navigated to $dest",
+            //    Toast.LENGTH_SHORT).show()
+
         }
     }
 

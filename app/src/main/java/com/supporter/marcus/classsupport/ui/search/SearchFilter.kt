@@ -109,7 +109,7 @@ class SearchFilter : Fragment() {
             R.id.action_apply -> {
 
                 NavHostFragment.findNavController(this).navigate(R.id.next_action)
-                Toast.makeText(activity, "hello", Toast.LENGTH_SHORT).show()
+
 
 
                 return true

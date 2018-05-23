@@ -61,35 +61,24 @@ class SearchFragment : Fragment() {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("HELOO", "ViewDetached")
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("HELOO", "ViewDestroyed")
+
         proposalList.clearOnScrollListeners()
         viewModel.states.removeObservers(this)
         viewModel.events.removeObservers(this)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d("HELOO", "ActivityCreated")
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("HELOO", "viewCreated")
+
         searchQuery = viewModel.getQuery()
 
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
         if (new) {
-            viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(),
+            viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.getGradeList(),
                 filterViewModel.getSchoolType(),
                 filterViewModel.getState(), filterViewModel.getSortBY(),
                     null, "25")
@@ -117,7 +106,7 @@ class SearchFragment : Fragment() {
         searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchQuery = query
-                filterViewModel.setSearched(query)
+                filterViewModel.searched.postValue(query)
                 search(query)
 
                 return false
@@ -141,7 +130,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(filterViewModel.getSearch(), filterViewModel.getGradeList(), filterViewModel.getSchoolType(), filterViewModel.getState(), filterViewModel.getSortBY(), null, "25")
+        viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.getGradeList(), filterViewModel.getSchoolType(), filterViewModel.getState(), filterViewModel.getSortBY(), null, "25")
     }
 
     private fun loadNextpage() {

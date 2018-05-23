@@ -40,11 +40,32 @@
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="launcher">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="fffefe" />
+                                      <entry key="foregroundImage" value="C:\Users\Marcus\Documents\android\mipmap-xxxhdpi\ic_launcher.png" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="launcherLegacy">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="backgroundColor" value="ff3a1a" />
+                                      <entry key="imageAsset" value="C:\Users\Marcus\Documents\android\mipmap-xxxhdpi\ic_launcher.png" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </PersistentState>
