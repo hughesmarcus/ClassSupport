@@ -37,6 +37,13 @@ class SearchFilter : Fragment() {
 
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        spinnerSchoolType.onItemSelectedListener = null
+        spinnerSortby.onItemSelectedListener = null
+        spinnerGrade.onItemSelectedListener = null
+    }
+
     private fun setUpSchoolSpinner() {
         spinnerSchoolType = school_level_spinner
         spinnerSchoolType.adapter = ArrayAdapter(
@@ -45,7 +52,7 @@ class SearchFilter : Fragment() {
                 resources.getStringArray(R.array.school_options_array)
         )
         spinnerSchoolType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (spinnerSchoolType.selectedItem.toString()) {
                     "Charter School" -> viewModel.schoolType.postValue("1")
                     "Magnet School" -> viewModel.schoolType.postValue("4")
@@ -72,7 +79,7 @@ class SearchFilter : Fragment() {
         )
         /*set click listener*/
         spinnerSortby.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (spinnerSortby.selectedItem.toString()) {
                     "Urgency" -> viewModel.sortBy.postValue("0")
                     "Poverty" -> viewModel.sortBy.postValue("1")
@@ -101,7 +108,7 @@ class SearchFilter : Fragment() {
         /*set click listener*/
         spinnerGrade.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                         when (spinner_grade_level.selectedItem.toString()) {
                             "Grades PreK-2" -> viewModel.gradeType.postValue("1")
                             "Grades 3-5" -> viewModel.gradeType.postValue("2")

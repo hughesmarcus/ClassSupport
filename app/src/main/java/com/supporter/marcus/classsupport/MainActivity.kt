@@ -76,13 +76,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-    override  fun onBackPressed() {
-        if (search_view.isSearchOpen) {
-            search_view.closeSearch()
-        } else {
-            super.onBackPressed()
-        }
+    override fun onBackPressed() = when {
+        search_view.isSearchOpen -> search_view.closeSearch()
+        else -> super.onBackPressed()
     }
 }

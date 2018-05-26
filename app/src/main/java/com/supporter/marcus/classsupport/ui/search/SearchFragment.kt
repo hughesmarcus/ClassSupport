@@ -76,12 +76,14 @@ class SearchFragment : Fragment() {
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        if (new) {
-            viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.gradeType.value,
-                    filterViewModel.schoolType.value,
-                    filterViewModel.state.value, filterViewModel.sortBy.value,
-                    null, "25")
-            new = false
+        when {
+            new -> {
+                viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.gradeType.value,
+                        filterViewModel.schoolType.value,
+                        filterViewModel.state.value, filterViewModel.sortBy.value,
+                        null, "25")
+                new = false
+            }
         }
         prepareListView()
 
@@ -184,11 +186,13 @@ class SearchFragment : Fragment() {
             val totalItemCount = proposalList.adapter.itemCount
             val firstVisibleItemPosition = (proposalList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
-            if (!loading && visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                    && firstVisibleItemPosition >= 0
-                    && totalItemCount >= PAGE_SIZE) {
-                loadNextpage()
-                loading = true
+            when {
+                !loading && visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= PAGE_SIZE -> {
+                    loadNextpage()
+                    loading = true
+                }
             }
 
         }

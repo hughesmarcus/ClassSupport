@@ -3,7 +3,6 @@ package com.supporter.marcus.classsupport.ui.detail
 import android.arch.lifecycle.Observer
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat.invalidateOptionsMenu
 import android.support.v4.app.Fragment
 import android.text.Html
 import android.util.Log
@@ -23,7 +22,7 @@ class ProposalDetailFragment : Fragment() {
     var proposalId = ""
     lateinit var proposalItem: Proposal
     var isFavorite: Boolean = false
-    //  lateinit var menu: Menu
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,7 +41,7 @@ class ProposalDetailFragment : Fragment() {
 
     private fun setFavorite(favorite: Boolean?) {
         isFavorite = favorite as Boolean
-        invalidateOptionsMenu(activity)
+        activity?.invalidateOptionsMenu()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,14 +58,17 @@ class ProposalDetailFragment : Fragment() {
 
     private fun showProposal(proposal: Proposal) {
         detail_proverty_level.text = proposal.povertyLevel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            detail_subject.text = Html.fromHtml(proposal.subject!!.name, Html.FROM_HTML_MODE_COMPACT)
-            detail_title.text = Html.fromHtml(proposal.title, Html.FROM_HTML_MODE_COMPACT)
-        } else {
-            detail_subject.text = Html.fromHtml(proposal.subject!!.name)
-            detail_title.text = Html.fromHtml(proposal.title)
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                detail_subject.text = Html.fromHtml(proposal.subject!!.name, Html.FROM_HTML_MODE_COMPACT)
+                detail_title.text = Html.fromHtml(proposal.title, Html.FROM_HTML_MODE_COMPACT)
+            }
+            else -> {
+                detail_subject.text = Html.fromHtml(proposal.subject!!.name)
+                detail_title.text = Html.fromHtml(proposal.title)
 
 
+            }
         }
         detail_grade_level.text = proposal.gradeLevel!!.name
         detail_amount.text = proposal.costToComplete
@@ -95,10 +97,9 @@ class ProposalDetailFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu?) {
         super.onPrepareOptionsMenu(menu)
-        if (isFavorite) {
-            menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_black)
-        } else {
-            menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_gone)
+        when {
+            isFavorite -> menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_black)
+            else -> menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_gone)
         }
 
     }
@@ -106,19 +107,22 @@ class ProposalDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                if (isFavorite) {
-                    viewModel.removeFavorite(ProposalItem.from(proposalItem))
-                    isFavorite = false
-                    item.setIcon(R.drawable.ic_favorite_gone)
-                    //menu!!.findItem(R.id.action_favorite)
+                when {
+                    isFavorite -> {
+                        viewModel.removeFavorite(ProposalItem.from(proposalItem))
+                        isFavorite = false
+                        item.setIcon(R.drawable.ic_favorite_gone)
+                        //menu!!.findItem(R.id.action_favorite)
 
 
-                } else {
-                    viewModel.addFavorite(ProposalItem.from(proposalItem))
-                    isFavorite = true
-                    //menu!!.findItem(R.id.action_favorite).
-                    item.setIcon(R.drawable.ic_favorite_black)
+                    }
+                    else -> {
+                        viewModel.addFavorite(ProposalItem.from(proposalItem))
+                        isFavorite = true
+                        //menu!!.findItem(R.id.action_favorite).
+                        item.setIcon(R.drawable.ic_favorite_black)
 
+                    }
                 }
                 return true
             }
