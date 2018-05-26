@@ -147,9 +147,6 @@ class SearchFilter : Fragment() {
             R.id.action_apply -> {
 
                 NavHostFragment.findNavController(this).navigate(R.id.next_action)
-
-
-
                 return true
             }
 

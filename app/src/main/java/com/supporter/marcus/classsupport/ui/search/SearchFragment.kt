@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.supporter.marcus.classsupport.R
@@ -37,10 +38,10 @@ class SearchFragment : Fragment() {
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
-                    is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.lasts.map {
+                    is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.list.map {
                         ProposalItem.from(it)
                     } as MutableList<ProposalItem>)
-                    is SearchViewModel.ProposalListState -> showProposalsItemList(state.lasts.map {
+                    is SearchViewModel.ProposalListState -> showProposalsItemList(state.list.map {
                         ProposalItem.from(it)
                     } as MutableList<ProposalItem>)
                 }
@@ -90,7 +91,10 @@ class SearchFragment : Fragment() {
     }
 
 
-    private fun loadingFailed() {}
+    private fun loadingFailed() {
+        Toast.makeText(activity, "Failed to load Proposals",
+                Toast.LENGTH_SHORT).show()
+    }
 
     private fun loadingEnd() {
         loading = false
@@ -114,18 +118,18 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                //Do some magic
+
                 return false
             }
         })
 
         searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
-                //Do some magic
+
             }
 
             override fun onSearchViewClosed() {
-                //Do some magic
+
             }
         })
     }

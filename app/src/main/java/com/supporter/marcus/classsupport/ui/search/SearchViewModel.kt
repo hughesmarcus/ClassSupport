@@ -78,36 +78,28 @@ class SearchViewModel(
 
 
     data class ProposalListState(
-            val id: String,
-            val first: Proposal,
-            val lasts: MutableList<Proposal>
+            val list: MutableList<Proposal>
     ) : State() {
         companion object {
             fun from(list: MutableList<Proposal>): ProposalListState {
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {
-                        val first = list.first()
-                        val id = first.id
-                        ProposalListState(id!!, first, list.takeLast(list.size - 1) as MutableList<Proposal>)
+                        ProposalListState(list)
                     }
                 }
             }
         }
     }
     data class AppendedProposalListState(
-            val id: String,
-            val first: Proposal,
-            val lasts: MutableList<Proposal>
+            val list: MutableList<Proposal>
     ) : State() {
         companion object {
             fun from(list: MutableList<Proposal>): AppendedProposalListState {
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {
-                        val first = list.first()
-                        val id = first.id
-                        AppendedProposalListState(id!!, first, list.takeLast(list.size - 1) as MutableList<Proposal>)
+                        AppendedProposalListState(list)
                     }
                 }
             }
