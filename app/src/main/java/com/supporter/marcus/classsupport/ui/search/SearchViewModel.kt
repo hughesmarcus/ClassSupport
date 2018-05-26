@@ -66,8 +66,9 @@ class SearchViewModel(
                 val proposals = donorRepository.getProposals(lastSearched, lastGradeType, lastSchoolType,
                         lastState,lastSortBy,lastIndex,lastMax).await()
                 lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
-                mStates.value = AppendedProposalListState.from(proposals)
                 mEvents.value = LoadingProposalsEventEnded(lastSearched)
+                mStates.value = AppendedProposalListState.from(proposals)
+
 
             } catch (error: Throwable) {
                 mEvents.value = LoadProposalsFailedEvent(lastSearched, error)

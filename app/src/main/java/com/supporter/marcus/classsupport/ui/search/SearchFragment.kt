@@ -2,24 +2,23 @@ package com.supporter.marcus.classsupport.ui.search
 
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
+import android.os.IBinder
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.view.*
-import kotlinx.android.synthetic.main.search_fragment.*
-import com.supporter.marcus.classsupport.R
-import org.koin.android.architecture.ext.viewModel
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
-import android.os.IBinder
 import android.support.v7.widget.RecyclerView
-import android.util.Log
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.navigation.fragment.NavHostFragment
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.supporter.marcus.classsupport.R
 import com.supporter.marcus.classsupport.util.ext.gone
 import com.supporter.marcus.classsupport.util.ext.visible
+import kotlinx.android.synthetic.main.search_fragment.*
 import org.koin.android.architecture.ext.sharedViewModel
+import org.koin.android.architecture.ext.viewModel
 
 
 class SearchFragment : Fragment() {
@@ -78,9 +77,9 @@ class SearchFragment : Fragment() {
         spinner = progressbar_search
         initsearchview()
         if (new) {
-            viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.getGradeList(),
-                filterViewModel.getSchoolType(),
-                filterViewModel.getState(), filterViewModel.getSortBY(),
+            viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.gradeType.value,
+                    filterViewModel.schoolType.value,
+                    filterViewModel.state.value, filterViewModel.sortBy.value,
                     null, "25")
             new = false
         }
@@ -130,7 +129,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.getGradeList(), filterViewModel.getSchoolType(), filterViewModel.getState(), filterViewModel.getSortBY(), null, "25")
+        viewModel.loadNewProposals(query, filterViewModel.gradeType.value,
+                filterViewModel.schoolType.value, filterViewModel.state.value,
+                filterViewModel.sortBy.value, null, "25")
     }
 
     private fun loadNextpage() {

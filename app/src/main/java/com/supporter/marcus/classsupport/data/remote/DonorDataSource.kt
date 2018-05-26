@@ -1,8 +1,8 @@
 package com.supporter.marcus.classsupport.data.remote
 import com.supporter.marcus.classsupport.data.remote.json.DonorSearchResult
+import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
-import kotlinx.coroutines.experimental.Deferred
 
 interface DonorDataSource {
     @GET("json_feed.html?")
@@ -13,7 +13,8 @@ interface DonorDataSource {
                        @Query("state") state: String?,
                        @Query("sortBy") sortBy: String?,
                        @Query("index") index: String?,
-                       @Query("max") max: String?
+                       @Query("max") max: String?,
+                       @Query("showSynopsis") showSynopsis: String
     ): Deferred<DonorSearchResult>
 
     @GET("json_feed.html?")

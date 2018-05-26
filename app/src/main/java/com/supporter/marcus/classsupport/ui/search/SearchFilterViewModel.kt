@@ -8,50 +8,11 @@ import android.arch.lifecycle.ViewModel
  */
 class SearchFilterViewModel : ViewModel() {
     val searched = MutableLiveData<String>()
-    //  private var searched: String? = "Yoga"
-    private var gradeType: String? = null
-    private var schoolType: String? = null
-    private var state: String? = null
-    private var sortBy: String? = "4"
+    val gradeType = MutableLiveData<String>()
+    val schoolType = MutableLiveData<String>()
+    val state = MutableLiveData<String>()
+    val sortBy = MutableLiveData<String>()
 
-    fun getGradeList(): String? {
-        return gradeType
-    }
-
-    //fun getSearch(): String? {
-    //    return searched
-    // }
-
-    fun getSchoolType(): String? {
-        return schoolType
-    }
-
-    fun getState(): String? {
-        return state
-    }
-
-    fun getSortBY(): String? {
-        return sortBy
-    }
-
-    //  fun setSearched(search: String?) {
-    //      searched = search
-    //  }
-    fun setGradeList(grade: String?) {
-        gradeType = grade
-    }
-
-    fun setSchoolType(school: String) {
-        schoolType = school
-    }
-
-    fun setState(state: String) {
-        this.state = state
-    }
-
-    fun setSortBY(sort: String?) {
-        sortBy = sort
-    }
 
 
 }

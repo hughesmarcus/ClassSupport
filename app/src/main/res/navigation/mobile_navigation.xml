@@ -22,9 +22,11 @@
     </fragment>
     <fragment
         android:id="@+id/launcher_favorites"
-        android:name="com.supporter.marcus.classsupport.ui.home.HomeFragment"
-        tools:layout="@layout/main_fragment">
-
+        android:name="com.supporter.marcus.classsupport.ui.favorite.FavoritesListFragment"
+        tools:layout="@layout/fragment_favorites_list">
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_proposal_detail"></action>
 
     </fragment>
     <fragment

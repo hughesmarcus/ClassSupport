@@ -20,11 +20,6 @@ val remoteDatasourceModule = applicationContext {
     bean { createWebService<DonorDataSource>(get(), "https://api.donorschoose.org/common/") }
 }
 
-
-//object DatasourceProperties {
-  //  const val SERVER_URL = "https://api.donorschoose.org/common/json_feed.html?"
-//}
-
 fun createOkHttpClient(): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC

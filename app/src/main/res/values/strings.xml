@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">DonorChoose</string>
+    <string name="app_name">Classroom Angel</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
@@ -41,13 +41,19 @@
         <item>Adult Ed</item>
     </string-array>
     <string-array name="sort_options_array">
-        <item>None</item>
+        <item>Any</item>
         <item>Urgency</item>
         <item>Poverty</item>
-        <item>Cost</item>
+        <item>Cost To Complete</item>
         <item>Popularity</item>
         <item>Expiration</item>
         <item>Newest</item>
+    </string-array>
+    <string-array name="school_options_array">
+        <item>Any</item>
+        <item>Charter School</item>
+        <item>Magnet School</item>
+        <item>Year Round School</item>
     </string-array>
 
 

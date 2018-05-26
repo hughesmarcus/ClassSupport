@@ -1,27 +1,29 @@
 package com.supporter.marcus.classsupport.ui.detail
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import com.supporter.marcus.classsupport.R
-import org.koin.android.architecture.ext.viewModel
 import android.arch.lifecycle.Observer
 import android.os.Build
+import android.os.Bundle
+import android.support.v4.app.ActivityCompat.invalidateOptionsMenu
+import android.support.v4.app.Fragment
 import android.text.Html
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
-import kotlinx.android.synthetic.main.fragment_proposal_detail.*
+import android.util.Log
+import android.view.*
 import androidx.navigation.fragment.NavHostFragment
+import com.supporter.marcus.classsupport.R
+import com.supporter.marcus.classsupport.data.remote.json.Proposal
+import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import com.supporter.marcus.classsupport.util.ext.loadUrl
+import kotlinx.android.synthetic.main.fragment_proposal_detail.*
+import org.koin.android.architecture.ext.viewModel
 
 
 class ProposalDetailFragment : Fragment() {
 
     private val viewModel by viewModel<ProposalDetailViewModel>()
     var proposalId = ""
+    lateinit var proposalItem: Proposal
+    var isFavorite: Boolean = false
+    //  lateinit var menu: Menu
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,19 +32,29 @@ class ProposalDetailFragment : Fragment() {
         Log.d("ProposalID", proposalId)
         viewModel.getProposal(proposalId).observe(this, Observer { proposal ->
             showProposal(proposal!!)
+            proposalItem = proposal
+        })
+        viewModel.getFavorite(proposalId).observe(this, Observer { favorite ->
+            setFavorite(favorite)
         })
         return inflater.inflate(R.layout.fragment_proposal_detail, container, false)
+    }
+
+    private fun setFavorite(favorite: Boolean?) {
+        isFavorite = favorite as Boolean
+        invalidateOptionsMenu(activity)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getProposal(proposalId)
+        viewModel.getFavorite(proposalId)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("HELOO", "ViewDestroyed")
         viewModel.getProposal(proposalId).removeObservers(this)
+        viewModel.getFavorite(proposalId).removeObservers(this)
     }
 
     private fun showProposal(proposal: Proposal) {
@@ -72,6 +84,48 @@ class ProposalDetailFragment : Fragment() {
         Log.d("html", proposal.proposalURL)
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        // this.menu = menu!!
+        inflater?.inflate(R.menu.menu_proposal_detail, menu)
+
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+        if (isFavorite) {
+            menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_black)
+        } else {
+            menu!!.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_gone)
+        }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_favorite -> {
+                if (isFavorite) {
+                    viewModel.removeFavorite(ProposalItem.from(proposalItem))
+                    isFavorite = false
+                    item.setIcon(R.drawable.ic_favorite_gone)
+                    //menu!!.findItem(R.id.action_favorite)
+
+
+                } else {
+                    viewModel.addFavorite(ProposalItem.from(proposalItem))
+                    isFavorite = true
+                    //menu!!.findItem(R.id.action_favorite).
+                    item.setIcon(R.drawable.ic_favorite_black)
+
+                }
+                return true
+            }
+
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
