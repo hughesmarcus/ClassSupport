@@ -3,6 +3,7 @@ package com.supporter.marcus.classsupport.data
 import com.supporter.marcus.classsupport.data.local.FavoriteDAO
 import com.supporter.marcus.classsupport.data.local.ProposalEntity
 import com.supporter.marcus.classsupport.data.remote.DonorDataSource
+import com.supporter.marcus.classsupport.data.remote.models.DonorSearchResult
 import com.supporter.marcus.classsupport.data.remote.models.Proposal
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import kotlinx.coroutines.experimental.Deferred
@@ -13,7 +14,7 @@ import kotlinx.coroutines.experimental.launch
 interface DonorRepository {
     fun getProposals(query: String?, gradeType: String?,
                      schoolType: String?, state: String?,
-                     sortBy: String?, index: String?, max: String?): Deferred<MutableList<Proposal>>
+                     sortBy: String?, index: String?, max: String?): Deferred<DonorSearchResult>
 
     fun getProposalById(id: String?): Deferred<Proposal>
 
@@ -58,7 +59,7 @@ class DonorRepositoryImpl(
 
     override fun getProposals(query: String?, gradeType: String?,
                               schoolType: String?, state: String?,
-                              sortBy: String?, index: String?, max: String?): Deferred<MutableList<Proposal>> = async {
+                              sortBy: String?, index: String?, max: String?): Deferred<DonorSearchResult> = async {
 
         val proposals = donorDataSource.searchProjects(
                 query,
@@ -71,7 +72,8 @@ class DonorRepositoryImpl(
                 max,
                 "true"
         ).await()
-        val done = proposals.proposals
+        val done = proposals
         done
     }
+
 }

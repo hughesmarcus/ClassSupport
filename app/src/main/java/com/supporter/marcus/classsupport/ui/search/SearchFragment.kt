@@ -205,7 +205,8 @@ class SearchFragment : Fragment() {
             when {
                 !loading && visibleItemCount + firstVisibleItemPosition >= totalItemCount
                         && firstVisibleItemPosition >= 0
-                        && totalItemCount >= PAGE_SIZE -> {
+                        && totalItemCount >= PAGE_SIZE
+                -> {
                     loadNextpage()
                     loading = true
                 }
