@@ -31,6 +31,8 @@
     <string name="SchoolName">Gardner Pilot Academy</string>
     <string name="StillNeeded">still needed</string>
     <string name="favorite">Favorite</string>
+    <string name="empty_search_result">No results for <b>%s</b></string>
+    <string name="empty_favorite_list">Empty List</string>
 
     <string-array name="grade_level_array">
         <item>Any</item>

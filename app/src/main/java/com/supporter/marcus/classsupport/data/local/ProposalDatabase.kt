@@ -8,4 +8,5 @@ import android.arch.persistence.room.RoomDatabase
 abstract class ProposalDatabase : RoomDatabase() {
 
     abstract fun favoriteDAO(): FavoriteDAO
+    abstract fun proposalDAO(): ProposalDAO
 }

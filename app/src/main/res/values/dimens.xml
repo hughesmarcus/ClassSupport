@@ -17,4 +17,7 @@
 <resources>
     <dimen name="photo_size">64dp</dimen>
     <dimen name="default_margin">8dp</dimen>
+    <dimen name="default_spacing_small">4dp</dimen>
+    <dimen name="default_spacing_medium">8dp</dimen>
+    <dimen name="default_spacing_huge">128dp</dimen>
 </resources>

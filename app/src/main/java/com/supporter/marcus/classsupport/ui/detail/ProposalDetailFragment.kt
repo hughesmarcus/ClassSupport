@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.util.Log
 import android.view.*
@@ -36,6 +37,14 @@ class ProposalDetailFragment : Fragment() {
         viewModel.getFavorite(proposalId).observe(this, Observer { favorite ->
             setFavorite(favorite)
         })
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                (activity as AppCompatActivity).supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_close)
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(false)
+            }
+        }
+
         return inflater.inflate(R.layout.fragment_proposal_detail, container, false)
     }
 
@@ -46,6 +55,7 @@ class ProposalDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getProposal(proposalId)
         viewModel.getFavorite(proposalId)
     }

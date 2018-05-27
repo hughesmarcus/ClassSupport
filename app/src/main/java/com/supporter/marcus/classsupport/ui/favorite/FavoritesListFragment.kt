@@ -4,15 +4,20 @@ package com.supporter.marcus.classsupport.ui.favorite
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
+import com.supporter.marcus.classsupport.MainActivity
 import com.supporter.marcus.classsupport.R
+import com.supporter.marcus.classsupport.ui.EmptyListState
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import com.supporter.marcus.classsupport.ui.search.SearchFragmentDirections
 import com.supporter.marcus.classsupport.ui.search.SearchListAdapter
+import com.supporter.marcus.classsupport.util.ext.gone
+import com.supporter.marcus.classsupport.util.ext.visible
 import kotlinx.android.synthetic.main.fragment_favorites_list.*
 import org.koin.android.architecture.ext.viewModel
 
@@ -34,6 +39,7 @@ class FavoritesListFragment : Fragment() {
             state?.let {
                 when (state) {
                     is FavoritesViewModell.ProposalListFavState -> showProposalsItemList(state.list)
+                    is EmptyListState -> showListEmpty()
                 }
             }
         })
@@ -48,7 +54,15 @@ class FavoritesListFragment : Fragment() {
                 }
             }
         })
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar!!.title = "Favorite"
         return inflater.inflate(R.layout.fragment_favorites_list, container, false)
+    }
+
+    private fun showListEmpty() {
+        no_results_text.visible()
+        proposal_fav_list.gone()
     }
 
     override fun onDestroyView() {
@@ -62,10 +76,7 @@ class FavoritesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // spinner = progressbar_search
-        if (new) {
             viewModel.loadProposals()
-            new = false
-        }
         prepareListView()
 
     }
@@ -94,9 +105,11 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun onSearchItemSelected(resultItem: ProposalItem) {
-        val action = SearchFragmentDirections.next_action()
-        action.setProposalId(resultItem.id)
-        NavHostFragment.findNavController(this).navigate(action)
+        if ((activity as MainActivity).isOnline()) {
+            val action = SearchFragmentDirections.next_action()
+            action.setProposalId(resultItem.id)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
     }
 
 

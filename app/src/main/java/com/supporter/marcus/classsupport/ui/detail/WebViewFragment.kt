@@ -1,24 +1,28 @@
 package com.supporter.marcus.classsupport.ui.detail
 
-import android.content.Context
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.webkit.WebViewClient
 import com.supporter.marcus.classsupport.R
 import kotlinx.android.synthetic.main.fragment_web_view.*
-import android.webkit.WebViewClient
-import android.webkit.WebSettings
 
 
 class WebViewFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                (activity as AppCompatActivity).supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_action_close)
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(false)
+            }
+        }
         return inflater.inflate(R.layout.fragment_web_view, container, false)
     }
 
@@ -35,4 +39,6 @@ class WebViewFragment : Fragment() {
         detial_webview.webViewClient = WebViewClient()
 
     }
+
+
 }

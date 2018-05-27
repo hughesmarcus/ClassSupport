@@ -37,6 +37,7 @@ val donorAppModule = applicationContext {
     bean { Room.databaseBuilder(androidApplication(), ProposalDatabase::class.java, "proposal-db").build() }
     //expose DAO
     bean { get<ProposalDatabase>().favoriteDAO() }
+    bean { get<ProposalDatabase>().proposalDAO() }
 
 }
 

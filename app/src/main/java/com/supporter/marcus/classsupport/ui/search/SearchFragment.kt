@@ -6,6 +6,7 @@ import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
@@ -35,12 +36,13 @@ class SearchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
+
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
-                    is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.list.map {
-                        ProposalItem.from(it)
-                    } as MutableList<ProposalItem>)
+                //is SearchViewModel.AppendedProposalListState -> showAddedProposalsItemList(state.list.map {
+                //     ProposalItem.from(it)
+                // } as MutableList<ProposalItem>)
                     is SearchViewModel.ProposalListState -> showProposalsItemList(state.list.map {
                         ProposalItem.from(it)
                     } as MutableList<ProposalItem>)
@@ -53,11 +55,15 @@ class SearchFragment : Fragment() {
             event?.let {
                 when (event) {
                     is SearchViewModel.LoadingProposalsEvent -> loadingStart()
-                    is SearchViewModel.LoadProposalsFailedEvent -> loadingFailed()
+                    is SearchViewModel.LoadProposalsFailedEvent -> loadingFailed(event.error.toString())
                     is SearchViewModel.LoadingProposalsEventEnded -> loadingEnd()
+                    is SearchViewModel.LoadMoreEvent -> showAddedProposalsItemList(event.list.map { ProposalItem.from(it) } as MutableList<ProposalItem>)
                 }
             }
         })
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(true)
+        (activity as AppCompatActivity).supportActionBar!!.title = "Search"
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
@@ -77,33 +83,39 @@ class SearchFragment : Fragment() {
         searchView = activity?.findViewById<MaterialSearchView>(R.id.search_view) ?: return
         spinner = progressbar_search
         initsearchview()
-        when {
-            new -> {
-                viewModel.loadNewProposals(filterViewModel.searched.value, filterViewModel.gradeType.value,
-                        filterViewModel.schoolType.value,
-                        filterViewModel.state.value, filterViewModel.sortBy.value,
-                        null, "25")
-                new = false
-            }
-        }
+        viewModel.getProposals(filterViewModel.searched.value, filterViewModel.gradeType.value,
+                filterViewModel.schoolType.value,
+                filterViewModel.state.value, filterViewModel.sortBy.value,
+                null, "25")
+
+
+
         prepareListView()
 
     }
 
 
-    private fun loadingFailed() {
-        Toast.makeText(activity, "Failed to load Proposals",
-                Toast.LENGTH_SHORT).show()
+    private fun loadingFailed(error: String) {
+        loading = false
+        spinner.gone()
+        proposalList.gone()
+        list_error.visible()
+        Toast.makeText(activity, error,
+                Toast.LENGTH_LONG).show()
     }
 
     private fun loadingEnd() {
         loading = false
         spinner.gone()
+        proposalList.visible()
+        list_error.gone()
     }
 
     private fun loadingStart() {
         loading = true
         spinner.visible()
+        proposalList.gone()
+        list_error.gone()
     }
 
     private fun initsearchview() {
@@ -135,7 +147,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(query: String) {
-        viewModel.loadNewProposals(query, filterViewModel.gradeType.value,
+        viewModel.getProposals(query, filterViewModel.gradeType.value,
                 filterViewModel.schoolType.value, filterViewModel.state.value,
                 filterViewModel.sortBy.value, null, "25")
     }

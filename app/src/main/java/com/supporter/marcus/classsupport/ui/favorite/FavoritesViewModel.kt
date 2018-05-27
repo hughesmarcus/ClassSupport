@@ -3,6 +3,7 @@ package com.supporter.marcus.classsupport.ui.favorite
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
+import com.supporter.marcus.classsupport.ui.EmptyListState
 import com.supporter.marcus.classsupport.ui.Event
 import com.supporter.marcus.classsupport.ui.State
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
@@ -16,24 +17,27 @@ class FavoritesViewModell(
 
 ) : RxViewModel(schedulerProvider) {
 
-    private val mStates = MutableLiveData<State>()
+    private val state = MutableLiveData<State>()
     val states: LiveData<State>
-        get() = mStates
+        get() = state
 
-    private val mEvents = SingleLiveEvent<Event>()
+    private val event = SingleLiveEvent<Event>()
     val events: LiveData<Event>
-        get() = mEvents
+        get() = event
 
     fun loadProposals() {
         launch {
-            mEvents.value = LoadingProposalsEvent("fav")
+            event.value = LoadingProposalsEvent("fav")
             try {
                 val proposals = donorRepository.getFavorites().await()
-
-                mStates.value = ProposalListFavState.from(proposals)
-                mEvents.value = LoadingProposalsEventEnded("fav")
+                if (proposals.isEmpty()) {
+                    state.value = EmptyListState
+                } else {
+                    state.value = ProposalListFavState.from(proposals)
+                }
+                event.value = LoadingProposalsEventEnded("fav")
             } catch (error: Throwable) {
-                mEvents.value = LoadProposalsFailedEvent("fav", error)
+                event.value = LoadProposalsFailedEvent("fav", error)
             }
         }
     }

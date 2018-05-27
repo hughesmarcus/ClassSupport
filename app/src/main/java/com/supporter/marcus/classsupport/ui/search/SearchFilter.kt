@@ -1,7 +1,9 @@
 package com.supporter.marcus.classsupport.ui.search
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -26,6 +28,13 @@ class SearchFilter : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 -> {
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+                (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(true)
+                (activity as AppCompatActivity).supportActionBar!!.title = "Filter"
+            }
+        }
         return inflater.inflate(R.layout.search_filter_fragment, container, false)
     }
 

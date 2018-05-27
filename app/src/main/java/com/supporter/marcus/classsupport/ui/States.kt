@@ -5,12 +5,12 @@ package com.supporter.marcus.classsupport.ui
  */
 open class State
 
-/**
- * Generic Loading State
- */
+
 object LoadingState : State()
 
 object LoadingMoreState : State()
+
+object EmptyListState : State()
 
 /**
  * Generic Error state

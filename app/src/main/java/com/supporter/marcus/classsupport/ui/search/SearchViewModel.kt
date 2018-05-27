@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
 import com.supporter.marcus.classsupport.data.remote.json.Proposal
+import com.supporter.marcus.classsupport.ui.EmptyListState
 import com.supporter.marcus.classsupport.ui.Event
 import com.supporter.marcus.classsupport.ui.LoadingMoreState
 import com.supporter.marcus.classsupport.ui.State
@@ -25,53 +26,81 @@ class SearchViewModel(
     private var lastState: String? = null
    private var lastSortBy: String? = null
     private var lastMax: String? = "50"
-    private val mStates = MutableLiveData<State>()
-    val states: LiveData<State>
-        get() = mStates
 
-    private val mEvents = SingleLiveEvent<Event>()
+    private val state = MutableLiveData<State>()
+    val states: LiveData<State>
+        get() = state
+
+    private val event = SingleLiveEvent<Event>()
     val events: LiveData<Event>
-        get() = mEvents
+        get() = event
+    private var proposals: MutableLiveData<MutableList<Proposal>>? = null
+
+    fun getProposals(query: String?, gradeType: String?,
+                     schoolType: String?, stateUs: String?,
+                     sortBy: String?, index: String?, max: String?) {
+        if (proposals?.value == null || lastSearched != query) {
+            proposals = MutableLiveData<MutableList<Proposal>>()
+            loadNewProposals(query, gradeType,
+                    schoolType, stateUs,
+                    sortBy, index, max)
+        } else {
+            state.value = ProposalListState.from(proposals!!.value!!)
+        }
+    }
+
 
     fun getQuery(): String? {
         return lastSearched
     }
-    fun loadNewProposals(query: String? ,gradeType: String?,
-                         schoolType: String?,state: String?,
-                         sortBy: String?,index: String?,max: String?) {
+    fun loadNewProposals(query: String?, gradeType: String?,
+                         schoolType: String?, stateUs: String?,
+                         sortBy: String?, index: String?, max: String?) {
         launch {
-            mEvents.value = LoadingProposalsEvent(query)
+            event.value = LoadingProposalsEvent(query)
             try {
-                val proposals = donorRepository.getProposals(query, gradeType, schoolType, state, sortBy, index, max).await()
+                val proposalsList = donorRepository.getProposals(query, gradeType,
+                        schoolType, stateUs, sortBy, index, max).await()
                 lastSearched = query
-                lastIndex = proposals.lastIndex.toString()
+                lastIndex = proposalsList.lastIndex.toString()
                 lastGradeType = gradeType
                 lastMax = max
                 lastSchoolType = schoolType
-                lastState = state
+                lastState = stateUs
                 lastSortBy = sortBy
-                mStates.value = ProposalListState.from(proposals)
-                mEvents.value = LoadingProposalsEventEnded(query)
+                if (proposalsList.isEmpty()) state.value = EmptyListState
+
+                proposals!!.value = proposalsList
+                state.value = ProposalListState.from(proposals!!.value!!)
+
+                event.value = LoadingProposalsEventEnded(query)
             } catch (error: Throwable) {
-                mEvents.value = LoadProposalsFailedEvent(query, error)
+                event.value = LoadProposalsFailedEvent(query, error)
             }
         }
     }
 
     fun loadNextPage() {
         launch {
-            mEvents.value = LoadingProposalsEvent(lastSearched)
-            mStates.value = LoadingMoreState
+            event.value = LoadingProposalsEvent(lastSearched)
+            state.value = LoadingMoreState
             try {
-                val proposals = donorRepository.getProposals(lastSearched, lastGradeType, lastSchoolType,
+                val proposalsList = donorRepository.getProposals(lastSearched, lastGradeType, lastSchoolType,
                         lastState,lastSortBy,lastIndex,lastMax).await()
                 lastIndex = (lastIndex!!.toInt()+ lastMax!!.toInt()).toString()
-                mEvents.value = LoadingProposalsEventEnded(lastSearched)
-                mStates.value = AppendedProposalListState.from(proposals)
+                if (proposalsList.isEmpty()) {
+                    state.value = EmptyListState
+                } else {
+                    proposals!!.value!!.addAll(proposalsList)
+                    event.value = LoadMoreEvent(proposalsList.takeLast(proposalsList.size - 1) as MutableList<Proposal>)
+
+
+                }
+                event.value = LoadingProposalsEventEnded(lastSearched)
 
 
             } catch (error: Throwable) {
-                mEvents.value = LoadProposalsFailedEvent(lastSearched, error)
+                event.value = LoadProposalsFailedEvent(lastSearched, error)
             }
         }
     }
@@ -85,7 +114,7 @@ class SearchViewModel(
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {
-                        ProposalListState(list)
+                        ProposalListState(list.takeLast(list.size - 1) as MutableList<Proposal>)
                     }
                 }
             }
@@ -109,4 +138,5 @@ class SearchViewModel(
     data class LoadingProposalsEvent(val query: String?) : Event()
     data class LoadProposalsFailedEvent(val query: String?, val error: Throwable) : Event()
     data class LoadingProposalsEventEnded(val query: String?) : Event()
+    data class LoadMoreEvent(val list: MutableList<Proposal>) : Event()
 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 
+
 interface DonorRepository {
     fun getProposals(query: String?, gradeType: String?,
                      schoolType: String?, state: String?,
@@ -58,6 +59,7 @@ class DonorRepositoryImpl(
     override fun getProposals(query: String?, gradeType: String?,
                               schoolType: String?, state: String?,
                               sortBy: String?, index: String?, max: String?): Deferred<MutableList<Proposal>> = async {
+
         val proposals = donorDataSource.searchProjects(
                 query,
                 "DONORSCHOOSE",
