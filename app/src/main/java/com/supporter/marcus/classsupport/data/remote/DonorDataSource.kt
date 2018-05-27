@@ -1,5 +1,6 @@
 package com.supporter.marcus.classsupport.data.remote
-import com.supporter.marcus.classsupport.data.remote.json.DonorSearchResult
+
+import com.supporter.marcus.classsupport.data.remote.models.DonorSearchResult
 import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -3,7 +3,7 @@ package com.supporter.marcus.classsupport.data
 import com.supporter.marcus.classsupport.data.local.FavoriteDAO
 import com.supporter.marcus.classsupport.data.local.ProposalEntity
 import com.supporter.marcus.classsupport.data.remote.DonorDataSource
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
+import com.supporter.marcus.classsupport.data.remote.models.Proposal
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async

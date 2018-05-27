@@ -10,7 +10,7 @@ import android.util.Log
 import android.view.*
 import androidx.navigation.fragment.NavHostFragment
 import com.supporter.marcus.classsupport.R
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
+import com.supporter.marcus.classsupport.data.remote.models.Proposal
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import com.supporter.marcus.classsupport.util.ext.loadUrl
 import kotlinx.android.synthetic.main.fragment_proposal_detail.*

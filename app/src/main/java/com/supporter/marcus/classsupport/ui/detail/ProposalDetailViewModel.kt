@@ -3,7 +3,7 @@ package com.supporter.marcus.classsupport.ui.detail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
+import com.supporter.marcus.classsupport.data.remote.models.Proposal
 import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import com.supporter.marcus.classsupport.util.mvvm.RxViewModel
 import com.supporter.marcus.classsupport.util.rx.SchedulerProvider

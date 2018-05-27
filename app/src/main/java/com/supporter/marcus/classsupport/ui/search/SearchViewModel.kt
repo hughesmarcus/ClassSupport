@@ -3,11 +3,8 @@ package com.supporter.marcus.classsupport.ui.search
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
-import com.supporter.marcus.classsupport.data.remote.json.Proposal
-import com.supporter.marcus.classsupport.ui.EmptyListState
-import com.supporter.marcus.classsupport.ui.Event
-import com.supporter.marcus.classsupport.ui.LoadingMoreState
-import com.supporter.marcus.classsupport.ui.State
+import com.supporter.marcus.classsupport.data.remote.models.Proposal
+import com.supporter.marcus.classsupport.ui.*
 import com.supporter.marcus.classsupport.util.mvvm.RxViewModel
 import com.supporter.marcus.classsupport.util.mvvm.SingleLiveEvent
 import com.supporter.marcus.classsupport.util.rx.SchedulerProvider
@@ -57,6 +54,7 @@ class SearchViewModel(
                          schoolType: String?, stateUs: String?,
                          sortBy: String?, index: String?, max: String?) {
         launch {
+            state.value = LoadingState
             event.value = LoadingProposalsEvent(query)
             try {
                 val proposalsList = donorRepository.getProposals(query, gradeType,
