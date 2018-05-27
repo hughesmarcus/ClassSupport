@@ -65,6 +65,6 @@ class SearchViewModelMockTest {
         // Test obtained values in order
         Assert.assertEquals(2, values.size)
         Assert.assertEquals(LoadingState, values[0])
-        
+
     }
 }
