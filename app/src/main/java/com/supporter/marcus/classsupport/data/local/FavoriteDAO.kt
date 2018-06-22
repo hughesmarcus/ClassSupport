@@ -1,6 +1,7 @@
 package com.supporter.marcus.classsupport.data.local
 
 import android.arch.persistence.room.*
+import com.supporter.marcus.classsupport.data.local.models.ProposalEntity
 
 @Dao
 interface FavoriteDAO {

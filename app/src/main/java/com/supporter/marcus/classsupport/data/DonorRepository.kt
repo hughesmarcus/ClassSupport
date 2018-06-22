@@ -1,7 +1,9 @@
 package com.supporter.marcus.classsupport.data
 
+import com.supporter.marcus.classsupport.data.local.DonationDAO
 import com.supporter.marcus.classsupport.data.local.FavoriteDAO
-import com.supporter.marcus.classsupport.data.local.ProposalEntity
+import com.supporter.marcus.classsupport.data.local.models.Donation
+import com.supporter.marcus.classsupport.data.local.models.ProposalEntity
 import com.supporter.marcus.classsupport.data.remote.DonorDataSource
 import com.supporter.marcus.classsupport.data.remote.models.DonorSearchResult
 import com.supporter.marcus.classsupport.data.remote.models.Proposal
@@ -25,12 +27,37 @@ interface DonorRepository {
     fun addFavorite(proposalItem: ProposalItem)
 
     fun removeFavorite(proposalItem: ProposalItem)
+
+    fun getDonations(): Deferred<List<Donation>>
+
+    fun getDonationById(id: String): Deferred<Donation?>
+
+    fun addDonation(donation: Donation)
+
+    fun removeDonation(donation: Donation)
 }
 
 class DonorRepositoryImpl(
         private val donorDataSource: DonorDataSource,
-        private val favoriteDAO: FavoriteDAO
+        private val favoriteDAO: FavoriteDAO,
+        private val donationDAO: DonationDAO
 ) : DonorRepository {
+    override fun getDonations(): Deferred<List<Donation>> = async {
+        (donationDAO.getDonations())
+    }
+
+    override fun getDonationById(id: String): Deferred<Donation?> = async {
+        (donationDAO.findDonationById(id))
+    }
+
+    override fun addDonation(donation: Donation) {
+        launch { donationDAO.save(donation) }
+    }
+
+    override fun removeDonation(donation: Donation) {
+        launch { donationDAO.removeDonation(donation) }
+    }
+
     override fun getFavoriteById(id: String): Deferred<Boolean> = async {
         (favoriteDAO.findProposalById(id) != null)
     }
@@ -72,8 +99,7 @@ class DonorRepositoryImpl(
                 max,
                 "true"
         ).await()
-        val done = proposals
-        done
+        proposals
     }
 
 }

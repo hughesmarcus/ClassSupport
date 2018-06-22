@@ -1,4 +1,4 @@
-package com.supporter.marcus.classsupport.data.local
+package com.supporter.marcus.classsupport.data.local.models
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

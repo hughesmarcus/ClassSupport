@@ -80,6 +80,8 @@ class ProposalDetailFragment : Fragment() {
 
             }
         }
+        teacher_name.text = proposal.teacherName!!
+        school_name.text = proposal.schoolName!!
         detail_grade_level.text = proposal.gradeLevel!!.name
         detail_amount.text = proposal.costToComplete
         progressBar1.progress = proposal.percentFunded!!.toInt()

@@ -65,8 +65,12 @@
             android:name="weburl"
             android:defaultValue="0"
             app:type="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/launcher_donations"
+        android:name="com.supporter.marcus.classsupport.ui.donations.DonationListFragment"
+        tools:layout="@layout/fragment_donation_list">
 
 
     </fragment>
-
 </navigation>

@@ -1,6 +1,6 @@
 package com.supporter.marcus.classsupport.ui.search
 
-import com.supporter.marcus.classsupport.data.local.ProposalEntity
+import com.supporter.marcus.classsupport.data.local.models.ProposalEntity
 import com.supporter.marcus.classsupport.data.remote.models.Proposal
 
 data class ProposalItem(val id: String, val desc: String, val teacher: String, val costToComplete: String,

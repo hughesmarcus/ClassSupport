@@ -33,6 +33,8 @@
     <string name="favorite">Favorite</string>
     <string name="empty_search_result">No results for <b>%s</b></string>
     <string name="empty_favorite_list">Empty List</string>
+    <string name="donations">Donations</string>
+    <string name="add_donation">Add Donation</string>
 
     <string-array name="grade_level_array">
         <item>Any</item>

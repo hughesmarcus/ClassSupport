@@ -9,5 +9,9 @@
         android:id="@id/launcher_favorites"
         android:icon="@drawable/ic_favorite_black"
         android:title="@string/favorites" />
+    <item
+        android:id="@id/launcher_donations"
+        android:icon="@drawable/ic_action_donation"
+        android:title="@string/donations" />
 
 </menu>

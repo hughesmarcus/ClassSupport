@@ -1,4 +1,4 @@
-package com.supporter.marcus.classsupport.ui.favorite
+package com.supporter.marcus.classsupport.ui.donations
 
 
 import android.arch.lifecycle.Observer
@@ -6,19 +6,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
-import com.supporter.marcus.classsupport.MainActivity
+import android.view.*
+import android.widget.ProgressBar
 import com.supporter.marcus.classsupport.R
+import com.supporter.marcus.classsupport.data.local.models.Donation
 import com.supporter.marcus.classsupport.ui.EmptyListState
-import com.supporter.marcus.classsupport.ui.search.ProposalItem
-import com.supporter.marcus.classsupport.ui.search.SearchFragmentDirections
-import com.supporter.marcus.classsupport.ui.search.SearchListAdapter
 import com.supporter.marcus.classsupport.util.ext.gone
 import com.supporter.marcus.classsupport.util.ext.visible
-import kotlinx.android.synthetic.main.fragment_favorites_list.*
+import kotlinx.android.synthetic.main.fragment_donation_list.*
 import org.koin.android.architecture.ext.viewModel
 
 
@@ -26,11 +21,11 @@ import org.koin.android.architecture.ext.viewModel
  * A simple [Fragment] subclass.
  *
  */
-class FavoritesListFragment : Fragment() {
+class DonationListFragment : Fragment() {
 
-    private val viewModel by viewModel<FavoritesViewModel>()
-    // private lateinit var spinner: ProgressBar
-    private var new: Boolean = true
+
+    private val viewModel by viewModel<DonationListViewModel>()
+    private lateinit var spinner: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,7 +33,7 @@ class FavoritesListFragment : Fragment() {
         viewModel.states.observe(this, Observer { state ->
             state?.let {
                 when (state) {
-                    is FavoritesViewModel.ProposalListFavState -> showProposalsItemList(state.list)
+                    is DonationListViewModel.DonationListState -> showProposalsItemList(state.list)
                     is EmptyListState -> showListEmpty()
                 }
             }
@@ -48,21 +43,21 @@ class FavoritesListFragment : Fragment() {
         viewModel.events.observe(this, Observer { event ->
             event?.let {
                 when (event) {
-                    is FavoritesViewModel.LoadingProposalsEvent -> loadingStart()
-                    is FavoritesViewModel.LoadProposalsFailedEvent -> loadingFailed()
-                    is FavoritesViewModel.LoadingProposalsEventEnded -> loadingEnd()
+                    is DonationListViewModel.LoadingDonationsEvent -> loadingStart()
+                    is DonationListViewModel.LoadDonationsFailedEvent -> loadingFailed()
+                    is DonationListViewModel.LoadingDonationsEventEnded -> loadingEnd()
                 }
             }
         })
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayShowTitleEnabled(true)
-        (activity as AppCompatActivity).supportActionBar!!.title = "Favorite"
-        return inflater.inflate(R.layout.fragment_favorites_list, container, false)
+        (activity as AppCompatActivity).supportActionBar!!.title = "Donations"
+        return inflater.inflate(R.layout.fragment_donation_list, container, false)
     }
 
     private fun showListEmpty() {
         no_results_text.visible()
-        proposal_fav_list.gone()
+        donation_list.gone()
     }
 
     override fun onDestroyView() {
@@ -75,8 +70,8 @@ class FavoritesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // spinner = progressbar_search
-            viewModel.loadProposals()
+        spinner = progressbar_don
+        viewModel.loadDonations()
         prepareListView()
 
     }
@@ -85,38 +80,56 @@ class FavoritesListFragment : Fragment() {
     private fun loadingFailed() {}
 
     private fun loadingEnd() {
-        //spinner.gone()
+        spinner.gone()
     }
 
     private fun loadingStart() {
-        //spinner.visible()
+        spinner.visible()
     }
 
 
     private fun prepareListView() {
-        proposal_fav_list.layoutManager =
+        donation_list.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        proposal_fav_list.adapter = SearchListAdapter(
+        donation_list.adapter = DonationListAdapter(
                 mutableListOf(),
-                ::onSearchItemSelected
+                ::onDonationSelected
         )
 
 
     }
 
-    private fun onSearchItemSelected(resultItem: ProposalItem) {
-        if ((activity as MainActivity).isOnline()) {
-            val action = SearchFragmentDirections.next_action()
-            action.setProposalId(resultItem.id)
-            NavHostFragment.findNavController(this).navigate(action)
-        }
+    private fun onDonationSelected(donation: Donation) {
+        //  val action = SearchFragmentDirections.next_action()
+        // action.setProposalId(donation.id)
+        // NavHostFragment.findNavController(this).navigate(action)
+
     }
 
 
-    private fun showProposalsItemList(newList: MutableList<ProposalItem>) {
-        val adapter: SearchListAdapter = proposal_fav_list.adapter as SearchListAdapter
+    private fun showProposalsItemList(newList: List<Donation>) {
+        val adapter: DonationListAdapter = donation_list.adapter as DonationListAdapter
         adapter.list = newList
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_donation_list, menu)
+
+
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_add_donation -> {
+
+                return true
+            }
+
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

@@ -1,17 +1,17 @@
-package com.supporter.marcus.classsupport.ui.favorite
+package com.supporter.marcus.classsupport.ui.donations
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.supporter.marcus.classsupport.data.DonorRepository
+import com.supporter.marcus.classsupport.data.local.models.Donation
 import com.supporter.marcus.classsupport.ui.EmptyListState
 import com.supporter.marcus.classsupport.ui.Event
 import com.supporter.marcus.classsupport.ui.State
-import com.supporter.marcus.classsupport.ui.search.ProposalItem
 import com.supporter.marcus.classsupport.util.mvvm.RxViewModel
 import com.supporter.marcus.classsupport.util.mvvm.SingleLiveEvent
 import com.supporter.marcus.classsupport.util.rx.SchedulerProvider
 
-class FavoritesViewModel(
+class DonationListViewModel(
         private val donorRepository: DonorRepository,
         schedulerProvider: SchedulerProvider
 
@@ -25,40 +25,39 @@ class FavoritesViewModel(
     val events: LiveData<Event>
         get() = event
 
-    fun loadProposals() {
+    fun loadDonations() {
         launch {
-            event.value = LoadingProposalsEvent("fav")
+            event.value = DonationListViewModel.LoadingDonationsEvent("donation")
             try {
-                val proposals = donorRepository.getFavorites().await()
-                if (proposals.isEmpty()) {
+                val donations = donorRepository.getDonations().await()
+                if (donations.isEmpty()) {
                     state.value = EmptyListState
                 } else {
-                    state.value = ProposalListFavState.from(proposals)
+                    state.value = DonationListViewModel.DonationListState.from(donations)
                 }
-                event.value = LoadingProposalsEventEnded("fav")
+                event.value = DonationListViewModel.LoadingDonationsEventEnded("donation")
             } catch (error: Throwable) {
-                event.value = LoadProposalsFailedEvent("fav", error)
+                event.value = DonationListViewModel.LoadDonationsFailedEvent("donation", error)
             }
         }
     }
 
-
-    data class ProposalListFavState(
-            val list: MutableList<ProposalItem>
+    data class DonationListState(
+            val list: List<Donation>
     ) : State() {
         companion object {
-            fun from(list: MutableList<ProposalItem>): ProposalListFavState {
+            fun from(list: List<Donation>): DonationListState {
                 return when {
                     list.isEmpty() -> error(" list should not be empty")
                     else -> {
-                        ProposalListFavState(list)
+                        DonationListState(list)
                     }
                 }
             }
         }
     }
 
-    data class LoadingProposalsEvent(val query: String?) : Event()
-    data class LoadProposalsFailedEvent(val query: String?, val error: Throwable) : Event()
-    data class LoadingProposalsEventEnded(val query: String?) : Event()
+    data class LoadingDonationsEvent(val query: String?) : Event()
+    data class LoadDonationsFailedEvent(val query: String?, val error: Throwable) : Event()
+    data class LoadingDonationsEventEnded(val query: String?) : Event()
 }

@@ -4,8 +4,10 @@ import android.arch.persistence.room.Room
 import com.supporter.marcus.classsupport.data.DonorRepository
 import com.supporter.marcus.classsupport.data.DonorRepositoryImpl
 import com.supporter.marcus.classsupport.data.local.ProposalDatabase
+import com.supporter.marcus.classsupport.data.local.migrations.MIGRATION_1_2
 import com.supporter.marcus.classsupport.ui.detail.ProposalDetailViewModel
-import com.supporter.marcus.classsupport.ui.favorite.FavoritesViewModell
+import com.supporter.marcus.classsupport.ui.donations.DonationListViewModel
+import com.supporter.marcus.classsupport.ui.favorite.FavoritesViewModel
 import com.supporter.marcus.classsupport.ui.home.HomeViewModel
 import com.supporter.marcus.classsupport.ui.search.SearchFilterViewModel
 import com.supporter.marcus.classsupport.ui.search.SearchViewModel
@@ -24,20 +26,26 @@ val donorAppModule = applicationContext {
     viewModel { ProposalDetailViewModel(get(), get()) }
     viewModel { SearchFilterViewModel() }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { FavoritesViewModell(get(), get()) }
+    viewModel { FavoritesViewModel(get(), get()) }
+    viewModel { DonationListViewModel(get(), get()) }
 
 
 
     // Weather Data Repository
-    bean { DonorRepositoryImpl(get(), get()) as DonorRepository }
+    bean { DonorRepositoryImpl(get(), get(), get()) as DonorRepository }
 
     // Rx Schedulers
     bean { ApplicationSchedulerProvider() as SchedulerProvider }
     //room database
-    bean { Room.databaseBuilder(androidApplication(), ProposalDatabase::class.java, "proposal-db").build() }
+    bean {
+        Room.databaseBuilder(androidApplication(), ProposalDatabase::class.java, "proposal-db")
+                .addMigrations(MIGRATION_1_2)
+                .build()
+    }
     //expose DAO
     bean { get<ProposalDatabase>().favoriteDAO() }
     bean { get<ProposalDatabase>().proposalDAO() }
+    bean { get<ProposalDatabase>().donationDAO() }
 
 }
 

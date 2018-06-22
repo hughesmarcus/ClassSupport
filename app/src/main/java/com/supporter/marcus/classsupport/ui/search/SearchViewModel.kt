@@ -90,7 +90,7 @@ class SearchViewModel(
 
                 event.value = LoadingProposalsEvent(lastSearched)
                 state.value = LoadingMoreState
-
+                lastIndex = (lastIndex!!.toInt() + 1).toString()
                 try {
                     val result = donorRepository.getProposals(lastSearched, lastGradeType, lastSchoolType,
                             lastState, lastSortBy, lastIndex, lastMax).await()
