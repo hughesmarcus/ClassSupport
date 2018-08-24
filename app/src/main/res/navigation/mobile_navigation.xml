@@ -71,6 +71,15 @@
         android:name="com.supporter.marcus.classsupport.ui.donations.DonationListFragment"
         tools:layout="@layout/fragment_donation_list">
 
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_add_donations"></action>
+
+    </fragment>
+    <fragment
+        android:id="@+id/launcher_add_donations"
+        android:name="com.supporter.marcus.classsupport.ui.donations.AddDonationFragment"
+        tools:layout="@layout/fragment_add_donation">
 
     </fragment>
 </navigation>

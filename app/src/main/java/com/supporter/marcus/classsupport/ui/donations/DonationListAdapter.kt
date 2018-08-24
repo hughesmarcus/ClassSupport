@@ -4,6 +4,7 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.supporter.marcus.classsupport.R
 import com.supporter.marcus.classsupport.data.local.models.Donation
 import com.supporter.marcus.classsupport.util.ext.inflate
@@ -27,8 +28,10 @@ class DonationListAdapter(
 
     inner class DonationResultHolder(item: View) : RecyclerView.ViewHolder(item) {
         private val donationItemLayout = item.findViewById<CardView>(R.id.donationItemLayout)
+        private val donationName = item.findViewById<TextView>(R.id.name)
+        private val donationAmount = item.findViewById<TextView>(R.id.amount)
+        private val donationDate = item.findViewById<TextView>(R.id.date)
 
-        //   private val proposaldesc = item.findViewById<TextView>(R.id.prop_desc)
 
 
         fun display(
@@ -36,8 +39,9 @@ class DonationListAdapter(
                 onClick: (Donation) -> Unit
         ) {
             donationItemLayout.setOnClickListener { onClick(donation) }
-
-            // teacher.text = proposal.teacher
+            donationName.text = donation.name
+            donationAmount.text = "$ " + donation.amount.toString()
+            donationDate.text = donation.date.toString()
 
 
         }

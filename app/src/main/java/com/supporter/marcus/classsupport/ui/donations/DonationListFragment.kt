@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.ProgressBar
+import androidx.navigation.fragment.NavHostFragment
 import com.supporter.marcus.classsupport.R
 import com.supporter.marcus.classsupport.data.local.models.Donation
 import com.supporter.marcus.classsupport.ui.EmptyListState
@@ -16,11 +17,6 @@ import com.supporter.marcus.classsupport.util.ext.visible
 import kotlinx.android.synthetic.main.fragment_donation_list.*
 import org.koin.android.architecture.ext.viewModel
 
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class DonationListFragment : Fragment() {
 
 
@@ -123,7 +119,8 @@ class DonationListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add_donation -> {
-
+                val action = DonationListFragmentDirections.next_action()
+                NavHostFragment.findNavController(this).navigate(action)
                 return true
             }
 
