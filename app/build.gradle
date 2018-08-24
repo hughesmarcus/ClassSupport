@@ -41,6 +41,7 @@ dependencies {
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$supportLibraryVersion"
 
+    implementation 'net.danlew:android.joda:2.9.4'
     // Android Test
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'

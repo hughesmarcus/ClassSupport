@@ -80,6 +80,9 @@
         android:id="@+id/launcher_add_donations"
         android:name="com.supporter.marcus.classsupport.ui.donations.AddDonationFragment"
         tools:layout="@layout/fragment_add_donation">
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/launcher_donations"></action>
 
     </fragment>
 </navigation>

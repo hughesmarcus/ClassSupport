@@ -6,9 +6,9 @@ import java.util.*
 
 @Entity(tableName = "donations")
 data class Donation(
-        @PrimaryKey
-        val id: String,
-        val amount: Double,
+        @PrimaryKey(autoGenerate = true)
+        val id: Int,
+        val amount: Float,
         val date: Date,
         val name: String
 )

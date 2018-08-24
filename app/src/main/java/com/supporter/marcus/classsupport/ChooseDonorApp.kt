@@ -1,11 +1,11 @@
 package com.supporter.marcus.classsupport
 
-import android.app.Activity
 import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.supporter.marcus.classsupport.di.onlineWeatherApp
 import io.fabric.sdk.android.Fabric
+import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.android.startKoin
 
 
@@ -16,7 +16,7 @@ class ChooseDonorApp : Application() {
         setupCrashlytics()
         // start Koin context
         startKoin(this,onlineWeatherApp)
-
+        JodaTimeAndroid.init(this)
 
     }
 

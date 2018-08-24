@@ -4,8 +4,8 @@ import android.arch.persistence.room.Room
 import com.supporter.marcus.classsupport.data.DonorRepository
 import com.supporter.marcus.classsupport.data.DonorRepositoryImpl
 import com.supporter.marcus.classsupport.data.local.ProposalDatabase
-import com.supporter.marcus.classsupport.data.local.migrations.MIGRATION_1_2
 import com.supporter.marcus.classsupport.ui.detail.ProposalDetailViewModel
+import com.supporter.marcus.classsupport.ui.donations.AddDonationViewModel
 import com.supporter.marcus.classsupport.ui.donations.DonationListViewModel
 import com.supporter.marcus.classsupport.ui.favorite.FavoritesViewModel
 import com.supporter.marcus.classsupport.ui.home.HomeViewModel
@@ -28,6 +28,7 @@ val donorAppModule = applicationContext {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { FavoritesViewModel(get(), get()) }
     viewModel { DonationListViewModel(get(), get()) }
+    viewModel { AddDonationViewModel(get(), get()) }
 
 
 
@@ -39,7 +40,7 @@ val donorAppModule = applicationContext {
     //room database
     bean {
         Room.databaseBuilder(androidApplication(), ProposalDatabase::class.java, "proposal-db")
-                .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .build()
     }
     //expose DAO

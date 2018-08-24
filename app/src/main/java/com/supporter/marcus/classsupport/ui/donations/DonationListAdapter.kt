@@ -1,13 +1,20 @@
 package com.supporter.marcus.classsupport.ui.donations
 
+import android.os.Build
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.supporter.marcus.classsupport.R
 import com.supporter.marcus.classsupport.data.local.models.Donation
 import com.supporter.marcus.classsupport.util.ext.inflate
+import org.joda.time.DateTime
+import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.util.*
+
 
 class DonationListAdapter(
         var list: List<Donation>,
@@ -15,7 +22,7 @@ class DonationListAdapter(
 ) : RecyclerView.Adapter<DonationListAdapter.DonationResultHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DonationResultHolder {
-        val view = parent.inflate(R.layout.item_proposal)
+        val view = parent.inflate(R.layout.donation_item)
         return DonationResultHolder(view)
     }
 
@@ -41,9 +48,21 @@ class DonationListAdapter(
             donationItemLayout.setOnClickListener { onClick(donation) }
             donationName.text = donation.name
             donationAmount.text = "$ " + donation.amount.toString()
-            donationDate.text = donation.date.toString()
 
+            val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
+            val todayWithZeroTime = formatter.parse(formatter.format(donation.date))
+            val cal: Calendar = Calendar.getInstance()
+
+            Log.d("Date", todayWithZeroTime.toString())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val current = donation.date.toInstant()
+                        .atZone(ZoneId.systemDefault()) // Specify the correct timezone
+                        .toLocalDate()
+                donationDate.text = current.month.toString() + "/" + current.dayOfMonth.toString() + "/" + current.year.toString()
+            }
+            val dt = DateTime(donation.date)
+            donationDate.text = dt.monthOfYear.toString() + "/" + dt.dayOfMonth + "/" + dt.year
         }
 
     }
