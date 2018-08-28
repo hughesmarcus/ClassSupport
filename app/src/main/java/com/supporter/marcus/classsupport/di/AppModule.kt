@@ -31,8 +31,6 @@ val donorAppModule = applicationContext {
     viewModel { AddDonationViewModel(get(), get()) }
 
 
-
-    // Weather Data Repository
     bean { DonorRepositoryImpl(get(), get(), get()) as DonorRepository }
 
     // Rx Schedulers
@@ -40,7 +38,6 @@ val donorAppModule = applicationContext {
     //room database
     bean {
         Room.databaseBuilder(androidApplication(), ProposalDatabase::class.java, "proposal-db")
-                .fallbackToDestructiveMigration()
                 .build()
     }
     //expose DAO
@@ -51,4 +48,4 @@ val donorAppModule = applicationContext {
 }
 
 // Gather all app modules
-val onlineWeatherApp = listOf(donorAppModule, remoteDatasourceModule)
+val onlineDonorApp = listOf(donorAppModule, remoteDatasourceModule)
